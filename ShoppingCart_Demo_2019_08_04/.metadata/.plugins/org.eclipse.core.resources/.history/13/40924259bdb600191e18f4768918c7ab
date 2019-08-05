@@ -1,0 +1,38 @@
+package com.org.shoppingcart.controller.util;
+
+import java.io.Serializable;
+import java.util.ResourceBundle;
+
+import org.springframework.web.client.RestTemplate;
+
+public class ServiceManager implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	protected RestTemplate restTemplate;
+	private static ResourceBundle resConfig;
+
+	public ServiceManager(String propertyVal) {
+		getAppConfigValue(propertyVal);
+	}
+
+	public void setRestTemplate(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+
+	
+
+	public static String getAppConfigValue(String key) {
+		if (resConfig == null)
+			resConfig = ResourceBundle.getBundle("app-config");
+		try {
+			return resConfig.getString(key);
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+}

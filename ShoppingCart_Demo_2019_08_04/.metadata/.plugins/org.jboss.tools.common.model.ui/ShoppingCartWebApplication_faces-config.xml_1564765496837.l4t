@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Layout resource="/ShoppingCartWebApplication/WebContent/WEB-INF/faces-config.xml">
+ <TreeFormPage>
+  <Memento type="FacesConfig22">
+   <Memento collapsed="false" type="Factories"/>
+   <Memento collapsed="false" type="Lifecycle"/>
+   <Memento collapsed="false" type="Advanced"/>
+  </Memento>
+  <Memento type="%No text%">
+   <Memento collapsed="false" type="Managed Beans"/>
+  </Memento>
+  <Memento type="JSFManagedBean20">
+   <Memento collapsed="false" type="Managed Bean"/>
+   <Memento collapsed="false" type="Properties"/>
+   <Memento collapsed="false" type="Advanced"/>
+  </Memento>
+ </TreeFormPage>
+</Layout>

@@ -1,0 +1,99 @@
+package lk.inova.common.util;
+
+import java.util.ResourceBundle;
+
+import org.apache.log4j.Logger;
+
+public class ResourceUtil {
+
+	/*
+	 * private static final ResourceBundle resConfigService = ResourceBundle
+	 * .getBundle("app-config-service");
+	 */
+	
+	private static final Logger log = Logger.getLogger(ResourceUtil.class);
+	
+	private static ResourceBundle resConfig;
+
+	//private static ResourceBundle resConfigService;
+	
+	//private static ResourceBundle resConfigMenu;
+	
+	public ResourceUtil() {
+
+	}
+
+	/*
+	 * public static String getAppConfigServiceValue(String key) { return
+	 * resConfigService.getString(key); }
+	 */
+
+	
+	/*public static String getAppMenuValue(String key) {
+		if (resConfigMenu == null)
+			resConfigMenu = ResourceBundle.getBundle("app-config-menu");
+		try {
+			if (key != null)
+				return resConfigMenu.getString(key);
+			else
+				return "";
+		} catch (Exception e) {
+			log.error(e);
+			return "";
+		}
+	}*/
+	
+	
+	public static String getAppConfigValue(String key) {
+		if (resConfig == null)
+			resConfig = ResourceBundle.getBundle("app-config");
+		try {
+			return resConfig.getString(key);
+		} catch (Exception e) {
+			log.error(e);
+			return "";
+		}
+	}
+	
+	/*public static String getAppConfigValue(String key, boolean checkEncrypt) {
+		if (resConfig == null)
+			resConfig = ResourceBundle.getBundle("app-config");
+		if(checkEncrypt){
+			try {
+				String encryptedStatus = key +".encrypted";
+				String strBoolean = resConfig.getString(encryptedStatus);
+				if(Boolean.parseBoolean(strBoolean))
+					return CryptoUtil.decrypt(resConfig.getString(key));
+				else
+					return resConfig.getString(key);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		}else{
+			try{
+				return resConfig.getString(key);
+			}catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		}
+	}*/
+	
+	
+	/*public static String getAppConfigServiceValue(String key) {
+		if (resConfigService == null)
+			resConfigService = ResourceBundle.getBundle("app-config-service");
+		try {
+			if (log.isDebugEnabled()) {
+				log.debug("Requested resource :" + key);
+			}
+			if (key != null)
+				return resConfigService.getString(key);
+			return "";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}*/
+}

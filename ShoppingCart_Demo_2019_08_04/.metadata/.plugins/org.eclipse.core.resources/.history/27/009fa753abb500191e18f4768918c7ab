@@ -1,0 +1,56 @@
+package com.rg.shoppingcart.controller;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import com.org.shoppingcart.dto.Product;
+import com.org.shoppingcart.service.impl.ProductServiceImpl;
+
+@SessionScoped
+@ManagedBean
+public class ProductManagedController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private List<Product> products;
+	
+	private String response;
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
+	public ProductManagedController() {
+		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
+		this.products = productServiceImpl.findAll();
+		System.out.println(products);
+	}
+
+	public String index() {
+		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
+		this.products = productServiceImpl.findAll();
+		return "index?faces-redirect=true";
+	}
+	
+	public String checkout() {
+		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
+		this.setResponse(productServiceImpl.checkoutItems(this.products));
+		return "welcome?faces-redirect=true";
+	}
+
+	public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+}

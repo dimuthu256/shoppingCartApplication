@@ -1,0 +1,14 @@
+package com.org.shoppingcart.core.subscriber;
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
+
+import com.org.shoppingcart.core.request.ProductRequest;
+
+@Component
+public class Subcriber {
+	@RabbitListener(queues = "${javainuse.rabbitmq.queue}")
+	public void receivedMessage(ProductRequest msg) {
+		System.out.println("Received Message: " + msg.getProductList().toString());
+	}
+}

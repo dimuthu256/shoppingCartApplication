@@ -1,0 +1,70 @@
+package com.org.shoppingcart.rest.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.org.shoppingcart.rest.bean.ProductDto;
+import com.org.shoppingcart.rest.model.Employee;
+import com.org.shoppingcart.rest.request.ProductRequest;
+import com.org.shoppingcart.rest.service.RabbitMQSender;
+
+@RestController
+@RequestMapping(value = "/api")
+public class RabbitMQWebController {
+
+	@Autowired
+	RabbitMQSender rabbitMQSender;
+
+	@GetMapping(value = "producer")
+	public Map<String, Object> producer(@RequestParam("empName") String empName, @RequestParam("empId") String empId) {
+		Map<String, Object> response = new HashMap<>();
+		Employee emp = new Employee();
+		emp.setEmpId(empId);
+		emp.setEmpName(empName);
+		rabbitMQSender.send(emp);
+		response.put("DATA", "Message sent to the RabbitMQ JavaInUse Successfully");
+		return response;
+	}
+
+	@PostMapping(value = "submitAll")
+	public Map<String, Object> submitAllProducts(@RequestBody ProductRequest productList) {
+		Map<String, Object> response = new HashMap<>();
+		System.out.println("HIIIIIIIIIIIIIIIIIII");
+		response.put("DATA", "Succesfully Added");
+		return response;
+	}
+
+	@GetMapping(value = "test")
+	public Map<String, Object> test() {
+		Map<String, Object> response = new HashMap<>();
+		response.put("DATA", "Test Success");
+		return response;
+	}
+
+	@GetMapping(value = "findAll")
+	public Map<String, Object> findAll() {
+		Map<String, Object> response = new HashMap<>();
+		ArrayList<ProductDto> productDtos = new ArrayList<>();
+		for (int i = 1; i < 10; i++) {
+			ProductDto productDto = new ProductDto();
+			productDto.setId(i);
+			productDto.setName("item" + i);
+			productDto.setPrice(100 * i);
+			productDtos.add(productDto);
+
+		}
+		response.put("DATA", productDtos);
+		return response;
+	}
+
+}

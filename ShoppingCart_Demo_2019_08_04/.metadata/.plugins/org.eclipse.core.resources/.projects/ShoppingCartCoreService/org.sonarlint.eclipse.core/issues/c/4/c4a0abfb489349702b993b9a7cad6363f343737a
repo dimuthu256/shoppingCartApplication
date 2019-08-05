@@ -1,0 +1,7 @@
+
+ksquid:S1172"7Remove this unused method parameter "messageConverter".(ü¾›–8»„¾ãÅ-HŸRMAJORZ
+CODE_SMELL
+•squid:S3457!"aNo need to call "toString()" method as formatting and string conversion is done by the Formatter.(¸þ—Ž8—¸ÛíÅ-H€%RMAJORZ
+CODE_SMELL
+Xsquid:S2629!"$Invoke method(s) only conditionally.(¸þ—Ž8—¸ÛíÅ-Hÿ$RMAJORZ
+CODE_SMELL

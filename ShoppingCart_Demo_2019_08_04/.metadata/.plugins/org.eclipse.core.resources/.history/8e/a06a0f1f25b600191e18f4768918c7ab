@@ -1,0 +1,207 @@
+package com.inova.bankbranch.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.inova.applogger.util.AllowLogging;
+import com.inova.bankbranch.rest.dto.BankBranchRequestDTO;
+import com.inova.bankbranch.rest.dto.BankBranchResponseDTO;
+import com.inova.bankbranch.rest.dto.BankBranchResponseDetailsDTO;
+import com.inova.bankbranch.rest.dto.PagingResponseDTO;
+import com.inova.bankbranch.service.BankBranchService;
+import com.inova.config.bankbranch.BankBranchConfig;
+import com.inova.exception.ApplicationException;
+import com.inova.repository.bankbranch.BankBranchRepository;
+import com.inova.repository.bankbranch.BankRepository;
+import com.inova.repository.common.UsersRepository;
+import com.inova.repository.entities.MstBank;
+import com.inova.repository.entities.MstBankBranch;
+import com.inova.repository.entities.User;
+
+@Service
+@Transactional(rollbackFor = Exception.class)
+public class BankBranchServiceImpl implements BankBranchService {
+
+	@Autowired
+	private BankBranchRepository bankBranchRepository;
+
+	@Autowired
+	private UsersRepository usersRepository;
+
+	@Autowired
+	private BankRepository bankRepository;
+
+	@Autowired
+	private BankBranchConfig bankBranchConfig;
+
+	@Autowired
+	public BankBranchServiceImpl(BankBranchRepository bankBranchRepository, UsersRepository usersRepository,
+			BankRepository bankRepository, BankBranchConfig bankBranchConfig) {
+		super();
+		this.bankBranchRepository = bankBranchRepository;
+		this.usersRepository = usersRepository;
+		this.bankRepository = bankRepository;
+	}
+
+	@AllowLogging
+	@Override
+	public BankBranchResponseDTO saveBankBranch(BankBranchRequestDTO requestDto) throws ApplicationException {
+		Optional<MstBank> bankById = this.bankRepository.findById(requestDto.getBankId());
+		if (bankById.isPresent()) {
+			Optional<User> checkUser = this.usersRepository.findById(requestDto.getUserId());
+			MstBankBranch response = this.bankBranchRepository
+					.save(createPayload(bankById.get(), requestDto, checkUser));
+			if (response.getId() > 0) {
+				return addBranchDetails(response);
+			}
+		} else {
+			throw new ApplicationException(bankBranchConfig.getBankBranchAddFailed());
+		}
+		return new BankBranchResponseDTO();
+	}
+
+	@AllowLogging
+	@Override
+	public BankBranchResponseDetailsDTO getAllBranchesByBankId(Integer bankId, Integer pageNumber, Integer pageSize)
+			throws ApplicationException {
+		Page<MstBankBranch> lstBankBranches = this.bankBranchRepository.findByMstBankId(bankId,
+				PageRequest.of(pageNumber, pageSize));
+		if (lstBankBranches.isEmpty()) {
+			throw new ApplicationException(bankBranchConfig.getBankBranchNotFound());
+		}
+
+		List<BankBranchResponseDTO> branchList = new ArrayList<>();
+		for (MstBankBranch branch : lstBankBranches) {
+			branchList.add(addBranchDetails(branch));
+		}
+
+		return BankBranchResponseDetailsDTO.builder().bankBranchResponseList(branchList)
+				.pagingResponseDTO(PagingResponseDTO.builder().pageNumber(lstBankBranches.getPageable().getPageNumber())
+						.pageSize(lstBankBranches.getPageable().getPageSize())
+						.totalRecords(lstBankBranches.getTotalElements()).build())
+				.build();
+
+	}
+
+	@AllowLogging
+	@Override
+	public BankBranchResponseDetailsDTO getAllBranchesByBankIdandStatus(Integer bankId, boolean isActive,
+			Integer pageNumber, Integer pageSize) throws ApplicationException {
+
+		Page<MstBankBranch> lstBankBranches = this.bankBranchRepository.findByMstBankIdAndActive(bankId, isActive,
+				PageRequest.of(pageNumber, pageSize));
+		if (lstBankBranches.isEmpty()) {
+			throw new ApplicationException(bankBranchConfig.getBankBranchNotFound());
+		}
+
+		List<BankBranchResponseDTO> branchList = new ArrayList<>();
+		for (MstBankBranch branch : lstBankBranches) {
+			branchList.add(addBranchDetails(branch));
+		}
+		return BankBranchResponseDetailsDTO.builder().bankBranchResponseList(branchList)
+				.pagingResponseDTO(PagingResponseDTO.builder().pageNumber(lstBankBranches.getPageable().getPageNumber())
+						.pageSize(lstBankBranches.getPageable().getPageSize())
+						.totalRecords(lstBankBranches.getTotalElements()).build())
+				.build();
+	}
+
+	@Override
+	public BankBranchResponseDetailsDTO getAllBranchesByBankCode(String bankCode, Integer pageNumber, Integer pageSize)
+			throws ApplicationException {
+		// To do - Table structure not available
+		return null;
+	}
+
+	@AllowLogging
+	@Override
+	public BankBranchResponseDetailsDTO getBankBranchById(Integer bankBranchId) throws ApplicationException {
+		Optional<MstBankBranch> bankBranch = this.bankBranchRepository.findById(bankBranchId);
+		if (!bankBranch.isPresent()) {
+			throw new ApplicationException(bankBranchConfig.getBankBranchNotFound());
+		}
+		List<BankBranchResponseDTO> branchList = new ArrayList<>();
+		MstBankBranch mstBankBranch = bankBranch.get();
+		branchList.add(addBranchDetails(mstBankBranch));
+		return BankBranchResponseDetailsDTO.builder().bankBranchResponseList(branchList).build();
+	}
+
+	@AllowLogging
+	@Override
+	public BankBranchResponseDTO updateBankBranch(BankBranchRequestDTO resRequest) throws ApplicationException {
+		try {
+			Optional<MstBankBranch> bankBranchById = this.bankBranchRepository.findById(resRequest.getBranchId());
+			if (bankBranchById.isPresent()) {
+				MstBankBranch createBranch = bankBranchById.get();
+				Optional<User> checkUser = this.usersRepository.findById(resRequest.getUserId());
+				if (resRequest.getBankId() != 0
+						&& resRequest.getBankId() != bankBranchById.get().getMstBank().getId()) {
+					Optional<MstBank> bankById = this.bankRepository.findById(resRequest.getBankId());
+					if (bankById.isPresent())
+						createBranch.setMstBank(bankById.get());
+					else {
+						throw new ApplicationException(bankBranchConfig.getBankNotFound());
+					}
+				}
+				createBranch.setNameEng(
+						resRequest.getNameEng() != null ? resRequest.getNameEng() : createBranch.getNameEng());
+				createBranch.setNameSin(resRequest.getNameSin());
+				createBranch.setNameTam(resRequest.getNameTam());
+				createBranch.setActive(resRequest.isActive());
+				createBranch.setUser2(checkUser.isPresent() ? checkUser.get() : null);
+				MstBankBranch result = this.bankBranchRepository.save(createBranch);
+				return addBranchDetails(result);
+			} else {
+				throw new ApplicationException(bankBranchConfig.getBankBranchUpdateFailed());
+			}
+		} catch (Exception e) {
+			throw new ApplicationException(bankBranchConfig.getBankBranchUpdateFailed());
+		}
+	}
+
+	@AllowLogging
+	@Override
+	public void deleteBankBranch(Integer bankBranchId) throws ApplicationException {
+		Optional<MstBankBranch> bankBranchById = this.bankBranchRepository.findById(bankBranchId);
+		if (bankBranchById.isPresent()) {
+			this.bankBranchRepository.delete(bankBranchById.get());
+		} else {
+			throw new ApplicationException(bankBranchConfig.getBankBranchNotFound());
+		}
+	}
+
+	private MstBankBranch createPayload(MstBank bankById, BankBranchRequestDTO requestDto, Optional<User> checkUser) {
+		MstBankBranch createBranch = new MstBankBranch();
+		createBranch.setMstBank(bankById);
+		createBranch.setNameEng(requestDto.getNameEng());
+		createBranch.setNameSin(requestDto.getNameSin());
+		createBranch.setNameTam(requestDto.getNameTam());
+		createBranch.setActive(requestDto.isActive());
+		if (checkUser.isPresent()) {
+			createBranch.setUser(checkUser.get());
+		}
+		return createBranch;
+	}
+
+	private BankBranchResponseDTO addBranchDetails(MstBankBranch mstBankBranch) {
+		BankBranchResponseDTO branchDetails = new BankBranchResponseDTO();
+		branchDetails.setBranchId(mstBankBranch.getId());
+		branchDetails.setBankId(mstBankBranch.getMstBank() != null ? mstBankBranch.getMstBank().getId() : null);
+		branchDetails.setActive(mstBankBranch.isActive());
+		branchDetails.setNameEng(mstBankBranch.getNameEng());
+		branchDetails.setNameSin(mstBankBranch.getNameSin());
+		branchDetails.setNameTam(mstBankBranch.getNameTam());
+		branchDetails.setCreatedBy(mstBankBranch.getUser() != null ? mstBankBranch.getUser().getUsername() : null);
+		branchDetails.setCreatedAt(mstBankBranch.getCreatedAt());
+		branchDetails.setUpdateBy(mstBankBranch.getUser2() != null ? mstBankBranch.getUser2().getUsername() : null);
+
+		return branchDetails;
+	}
+
+}

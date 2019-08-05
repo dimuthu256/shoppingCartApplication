@@ -1,0 +1,12 @@
+server.port=5009
+spring.application.name=shopping-cart-rest-application
+
+spring.rabbitmq.host=127.0.0.1
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+javainuse.rabbitmq.exchange=javainuse.exchange
+javainuse.rabbitmq.queue=javainuse.queue
+javainuse.rabbitmq.routingkey=javainuse.routingkey
+
+shopping.cart.service.url=http://localhost:8083/api

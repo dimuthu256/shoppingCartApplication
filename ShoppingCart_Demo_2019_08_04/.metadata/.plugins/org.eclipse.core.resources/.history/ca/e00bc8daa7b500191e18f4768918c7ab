@@ -1,0 +1,34 @@
+package lk.inova.common.util;
+
+public class REST_CONTROLLER_URL {
+	
+	public static final String TEST_REST = "/TestRest";
+	public static final String TEST_CORE = "/TestCore";
+	public static final String LOGGED_IN_USER = "/loggedInUser";
+	public static final String CHECK_APN_PERMISSION = "/checkAPNPermission";
+	public static final String PERMISSION_GRANT_USER = "/permissionGrantUser";
+	public static final String CHECK_MOBILE_STATUS = "/checkMobileStatus";
+	public static final String CURRENT_DEFAULT_APN = "/currentDefaultAPN";
+	public static final String GET_APN_LIST = "/getAPNList";
+	public static final String SELECTED_APN_VALIDATE = "/validateSelectedAPN";
+	public static final String SET_DEFAULT_APN = "/setDefaultAPN";
+	public static final String ADD_APN = "/addAPN";
+	public static final String GET_APN_DELETE_LIST = "/getApnDeleteList";
+	public static final String SELECTED_DELETE_APN_VALIDATE = "/validateSelectedDeleteAPN";
+	public static final String REMOVE_SELECTED_APN = "/removeSelectedApn";
+	public static final String SUBMIT_MOBILE_DETAILS = "/submitMobileDetails";
+	public static final String NON_HLR6_APN_VALIDATE = "/nonHlr6ApnValidate";
+	public static final String ADD_NONHLR6_APN = "/addNonHLR6Apn";
+	public static final String GET_NONHLR6_DELETE_LIST = "/getNonHlr6DeleteList";
+	public static final String SELECTED_NONHLR6APN_VALIDATE = "/SelectedNonHlr6ApnValidate";
+	public static final String REMOVE_SELECTED_NONHLR6APN = "/removeSelectedNonHlr6Apn";
+	public static final String ADD_BULK_APN_LIST = "/addBulkApnList";
+	public static final String DELETE_BULK_APN_LIST = "/deleteBulkApnList";
+	public static final String BULK_APN_SEARCH_LIST = "/bulkApnSearchList";
+	public static final String ADD_APN_PERMISSION = "/addApnPermission";
+	
+	
+	//public static final String AUTH_APN_ACCOUNTS = "/authAPNAccounts";
+	//public static final String CHK_APN_AUTHENTICATION = "/chkAPNAuthentication";
+
+}

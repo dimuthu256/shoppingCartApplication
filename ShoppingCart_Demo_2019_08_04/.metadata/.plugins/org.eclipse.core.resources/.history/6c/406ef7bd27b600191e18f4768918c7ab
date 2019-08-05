@@ -1,0 +1,7 @@
+package com.org.shoppingcart.core.service;
+
+public interface ShoppingCartService {
+
+	
+
+}

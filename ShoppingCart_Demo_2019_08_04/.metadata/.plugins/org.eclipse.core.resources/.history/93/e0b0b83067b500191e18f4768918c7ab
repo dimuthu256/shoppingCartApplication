@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head></h:head>
+<body>
+
+	<h3>My Shopping Cart Info</h3>
+	<h:form prependId="false">
+		<h:dataTable value="#{cartManagedBean.items}" var="item" border="2"
+			cellspacing="2" cellpadding="2">
+			<h:column align="center">
+				<f:facet name="header">Option</f:facet>
+				<h:commandLink value="X"
+					action="#{cartManagedBean.delete(item.product)}"></h:commandLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Id</f:facet>#{item.product.id}</h:column>
+			<h:column>
+				<f:facet name="header">Name</f:facet>#{item.product.name}</h:column>
+			<h:column>
+				<f:facet name="header">Price</f:facet>#{item.product.price}</h:column>
+			<h:column>
+				<f:facet name="header">Quantity</f:facet>#{item.quantity}</h:column>
+			<h:column>
+				<f:facet name="header">Sub Total</f:facet>#{item.product.price * item.quantity}</h:column>
+			<h:column colspan="5" align="right">
+				<f:facet name="header">Total</f:facet>#{cartManagedBean.total()}</h:column>
+		</h:dataTable>
+		<br/><br/>
+		<h:commandButton value="Continue Shopping" type="submit"
+			action="#{productManagedBean.index()}"></h:commandButton>
+		<h:outputText style="padding-left: 3"></h:outputText>
+		<h:commandButton value="Continue Shopping" type="submit"
+			action="#{productManagedBean.index()}"></h:commandButton>	
+	</h:form>
+
+</body>
+</html>

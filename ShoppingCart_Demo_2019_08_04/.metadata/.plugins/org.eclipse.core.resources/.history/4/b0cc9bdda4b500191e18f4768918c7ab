@@ -1,0 +1,4 @@
+#lk.inova.rest.url=http://localhost:8230/APNCoreService/rest
+#lk.inova.rest.url=http://localhost:7070/APNCoreService/rest
+#lk.inova.rest.url=http://192.168.248.220:7001/APNCoreService/rest
+lk.inova.rest.url=http://localhost:5010/javainuse-rabbitmq

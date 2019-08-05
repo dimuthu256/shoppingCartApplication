@@ -1,0 +1,52 @@
+package com.org.shoppingcart.core.controller;
+
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.org.shoppingcart.core.request.ProductRequest;
+import com.org.shoppingcart.core.response.ProductResponse;
+import com.org.shoppingcart.core.service.ShoppingCartService;
+
+@Component
+@RestController
+@RequestMapping(value = "/api")
+public class ShoppingCartController {
+
+	@Autowired
+	private ShoppingCartService shoppingCartService;
+
+	public ShoppingCartController(ShoppingCartService shoppingCartService) {
+		super();
+		this.shoppingCartService = shoppingCartService;
+	}
+
+	@GetMapping(value = "products")
+	public ProductResponse findAllProducts() {
+		ProductResponse response = new ProductResponse();
+		try {
+			return shoppingCartService.findAllProducts();
+
+		} catch (Exception e) {
+			response.setStatus("Failed");
+			response.setStatusCode(0);
+		}
+		return new ProductResponse();
+	}
+
+	//@RabbitListener(queues = "${javainuse.rabbitmq.queue}")
+	public void receivedMessage(ProductRequest request) {
+		try {
+			System.out.println("Message Receiverd : " + request.toString());
+			shoppingCartService.saveAll(request);
+			System.out.println("Message Receiverd : channel close" );
+		} catch (Exception e) {
+			System.out.println("Error..........");
+			e.printStackTrace();
+		}
+
+	}
+}

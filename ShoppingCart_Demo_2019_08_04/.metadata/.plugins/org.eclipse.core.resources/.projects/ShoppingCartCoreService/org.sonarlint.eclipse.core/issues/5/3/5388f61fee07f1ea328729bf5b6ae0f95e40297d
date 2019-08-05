@@ -1,0 +1,7 @@
+
+ásquid:S2293ë"YReplace the type specification in this constructor call with the diamond operator ("<>").(´î≠¸HøRMINORZ
+CODE_SMELL
+çsquid:S1149Ö"_Replace the synchronized class "StringBuffer" by an unsynchronized one such as "StringBuilder".(ïéÂóH¡RMAJORZ
+CODE_SMELL
+osquid:S1126ﬁ"AReplace this if-then-else statement by a single return statement.(∑œ©†H¿RMINORZ
+CODE_SMELL

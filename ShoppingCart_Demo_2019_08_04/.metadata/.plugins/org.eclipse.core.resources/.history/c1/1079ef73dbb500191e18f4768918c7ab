@@ -1,0 +1,5 @@
+package com.org.shoppingcart.response;
+
+public class ProductResponse {
+
+}

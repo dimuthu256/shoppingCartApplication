@@ -1,0 +1,21 @@
+package com.org.shoppingcart.response;
+
+import java.io.Serializable;
+
+import com.org.shoppingcart.dto.Data;
+
+public class ProductResponse implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	private Data data;
+
+	public Data getData() {
+		return data;
+	}
+
+	public void setData(Data data) {
+		this.data = data;
+	}
+
+}

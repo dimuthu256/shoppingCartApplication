@@ -1,0 +1,67 @@
+package com.org.shoppingcart;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import com.org.shoppingcart.bean.Item;
+import com.org.shoppingcart.bean.Product;
+
+@SessionScoped
+@ManagedBean
+public class CartManagedBean implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private List<Item> items;
+
+	public CartManagedBean() {
+		this.items = new ArrayList<Item>();
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public String buy(Product product) {
+		int index = this.exists(product);
+		if (index == -1) {
+			this.items.add(new Item(product, 1));
+		} else {
+			int quantity = this.items.get(index).getQuantity() + 1;
+			this.items.get(index).setQuantity(quantity);
+		}
+		return "cart?faces-redirect=true";
+	}
+
+	public String delete(Product product) {
+		int index = this.exists(product);
+		this.items.remove(index);
+		return "cart?faces-redirect=true";
+	}
+
+	public double total() {
+		double s = 0;
+		for (Item item : this.items) {
+			s += item.getProduct().getPrice() * item.getQuantity();
+		}
+		return s;
+	}
+
+	private int exists(Product product) {
+		for (int i = 0; i < this.items.size(); i++) {
+			if (this.items.get(i).getProduct().getId() == product.getId()) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+}

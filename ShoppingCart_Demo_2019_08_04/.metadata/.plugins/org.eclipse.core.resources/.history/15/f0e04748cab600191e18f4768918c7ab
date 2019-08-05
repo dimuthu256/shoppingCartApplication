@@ -1,0 +1,40 @@
+package com.org.shoppingcart.rest.response;
+
+import java.io.Serializable;
+
+import com.org.shoppingcart.rest.bean.DataDto;
+
+
+public class ProductResponse implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	private DataDto dataDto;
+	private String status;
+	private int statusCode;
+
+	public DataDto getData() {
+		return dataDto;
+	}
+
+	public void setData(DataDto dataDto) {
+		this.dataDto = dataDto;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
+
+}

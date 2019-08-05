@@ -1,0 +1,13 @@
+package com.org.shoppingcart.rest;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ShoppingCartRestServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ShoppingCartRestServiceApplication.class, args);
+	}
+
+}

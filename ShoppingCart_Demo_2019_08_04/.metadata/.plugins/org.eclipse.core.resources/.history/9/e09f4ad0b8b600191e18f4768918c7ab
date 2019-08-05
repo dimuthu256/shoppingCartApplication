@@ -1,0 +1,13 @@
+package com.org.shoppingcart.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+@lombok.Data
+public class Data implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
+	private List<ProductDto> productList;
+	
+}

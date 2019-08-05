@@ -1,0 +1,27 @@
+package com.org.shoppingcart.core.service;
+
+import com.inova.bankbranch.rest.dto.BankBranchRequestDTO;
+import com.inova.bankbranch.rest.dto.BankBranchResponseDetailsDTO;
+import com.inova.bankbranch.rest.dto.BankBranchResponseDTO;
+import com.inova.exception.ApplicationException;
+
+public interface ShoppingCartService {
+
+	public BankBranchResponseDetailsDTO getAllBranchesByBankId(Integer bankId, Integer pageNumber, Integer pageSize)
+			throws ApplicationException;
+
+	public BankBranchResponseDetailsDTO getAllBranchesByBankCode(String bankCode, Integer pageNumber, Integer pageSize)
+			throws ApplicationException;
+
+	public BankBranchResponseDetailsDTO getAllBranchesByBankIdandStatus(Integer bankId, boolean isActive,
+			Integer pageNumber, Integer pageSize) throws ApplicationException;
+
+	public BankBranchResponseDetailsDTO getBankBranchById(Integer bankBranchId) throws ApplicationException;
+
+	public BankBranchResponseDTO saveBankBranch(BankBranchRequestDTO resRequest) throws ApplicationException;
+
+	public BankBranchResponseDTO updateBankBranch(BankBranchRequestDTO resRequest) throws ApplicationException;
+
+	public void deleteBankBranch(Integer bankBranchId) throws ApplicationException;
+
+}

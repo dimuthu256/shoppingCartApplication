@@ -1,0 +1,40 @@
+package com.org.shoppingcart;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import com.org.shoppingcart.bean.Product;
+import com.org.shoppingcart.service.ProductModel;
+
+@SessionScoped
+@ManagedBean
+public class ProductManagedBean implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private List<Product> products;
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
+	public ProductManagedBean() {
+		ProductModel productModel = new ProductModel();
+		this.products = productModel.findAll();
+	}
+
+	public String index() {
+		ProductModel productModel = new ProductModel();
+		this.products = productModel.findAll();
+		return "index?faces-redirect=true";
+	}
+
+}

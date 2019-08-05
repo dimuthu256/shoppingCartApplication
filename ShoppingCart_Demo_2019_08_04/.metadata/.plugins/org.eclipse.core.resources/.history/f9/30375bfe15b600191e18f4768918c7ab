@@ -1,0 +1,5 @@
+package com.org.shoppingcart.service;
+
+public class ProductService {
+
+}
