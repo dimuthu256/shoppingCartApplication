@@ -1,3 +1,0 @@
-#shopping cart rest url
-shopping.cart.rest.url=http://127.0.0.1:8083/api
-eureka.client.service-url.default-zone=http://localhost:8085/eureka

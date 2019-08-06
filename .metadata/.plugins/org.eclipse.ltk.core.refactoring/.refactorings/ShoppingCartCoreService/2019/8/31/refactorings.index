@@ -1,9 +1,0 @@
-1564857164127	Move compilation unit
-1564857732001	Rename package 'com.org.shoppingcart.rest'
-1564858388231	Rename package 'com.org.shoppingcart.rest.request'
-1564858450595	Rename package 'com.org.shoppingcart.rest.bean'
-1564860481037	Rename type 'BankBranchService'
-1564860552783	Rename type 'BankBranchService'
-1564860607181	Delete element
-1564860616291	Rename type 'BankBranchServiceImpl'
-1564861765227	Rename package 'com.org.shoppingcart.rest.response'

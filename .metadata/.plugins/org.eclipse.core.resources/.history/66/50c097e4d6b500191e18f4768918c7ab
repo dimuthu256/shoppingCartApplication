@@ -1,5 +1,0 @@
-package com.org.shoppingcart.restcom.orgshoppingcart.rest.request;
-
-public class ProductRequest {
-
-}

@@ -1,8 +1,0 @@
-package com.org.controller.util;
-
-public class REST_CONTROLLER_URL {
-	
-	public static final String SUBMIT_SELECTED_ITEMS = "/submitAll";
-	public static final String TEST_CORE = "/TestCore";
-
-}

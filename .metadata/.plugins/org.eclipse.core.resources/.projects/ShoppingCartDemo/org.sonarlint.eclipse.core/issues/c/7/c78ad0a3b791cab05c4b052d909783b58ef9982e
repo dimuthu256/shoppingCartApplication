@@ -1,12 +1,0 @@
-
-l
-squid:S106 "9Replace this use of System.out or System.err by a logger.(˜´’È8‹»Ã”Å-HÖ	RMAJORZ
-CODE_SMELL
-á%squid:RedundantThrowsDeclarationCheck"’Remove the declaration of thrown exception 'org.springframework.security.core.userdetails.UsernameNotFoundException' which is a runtime exception.(ÌÃŸ8‹»Ã”Å-H×	RMINORZ
-CODE_SMELL
-œsquid:S14886"cImmediately return this expression instead of assigning it to the temporary variable "userDetails".(Ÿ—Ç­ùÿÿÿÿ8ÉÓ”Å-HØ	RMINORZ
-CODE_SMELL
-squid:S2293*"YReplace the type specification in this constructor call with the diamond operator ("<>").(ˆ¯ÎÜ8‹»Ã”Å-HÙ	RMINORZ
-CODE_SMELL
-gsquid:S19056".Remove this unnecessary cast to "UserDetails".(Ÿ—Ç­ùÿÿÿÿ8‹»Ã”Å-HÚ	RMINORZ
-CODE_SMELL

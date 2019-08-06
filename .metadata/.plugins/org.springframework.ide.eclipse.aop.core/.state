@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<aop-reference-model>
-<aop-project name="ShoppingCartCoreService"/>
-<aop-project name="ShoppingCartWebService"/>
-<aop-project name="ShoppingCartWebModule"/>
-<aop-project name="eureka-nameing-server"/>
-</aop-reference-model>

@@ -1,1 +1,0 @@
-INDEX VERSION 1.4+D:\WORKSPACE\ShoppingCart_Demo_2019_08_04\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes

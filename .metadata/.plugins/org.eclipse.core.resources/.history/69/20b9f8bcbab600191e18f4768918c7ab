@@ -1,4 +1,0 @@
-#shopping cart rest url
-shopping.cart.rest.url=http://127.0.0.1:8083/api
-shopping.cart.getallitems.url =/products
-shopping.cart.submititems.url =/products

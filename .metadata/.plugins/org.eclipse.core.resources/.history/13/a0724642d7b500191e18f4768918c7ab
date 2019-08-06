@@ -1,5 +1,0 @@
-package com.org.shoppingcart.rest.response;
-
-public class ProductResponse {
-
-}

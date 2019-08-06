@@ -1,5 +1,0 @@
-package com.org.shoppingcart.service;
-
-public interface ProductService {
-
-}

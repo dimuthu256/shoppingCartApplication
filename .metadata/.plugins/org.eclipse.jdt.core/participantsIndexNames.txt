@@ -1,3 +1,0 @@
-INDEX VERSION 1.131
-D:\WORKSPACE\ShoppingCart_Demo_2019_08_04\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\924669269.index
-\ShoppingCartWebApplication\src\main\resources
