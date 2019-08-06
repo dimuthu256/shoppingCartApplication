@@ -1,0 +1,112 @@
+package com.org.shoppingcart.core.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.org.shoppingcart.core.bean.DataDto;
+import com.org.shoppingcart.core.bean.ItemDto;
+import com.org.shoppingcart.core.bean.ProductDto;
+import com.org.shoppingcart.core.entities.OrderDetails;
+import com.org.shoppingcart.core.entities.Products;
+import com.org.shoppingcart.core.exception.ApplicationException;
+import com.org.shoppingcart.core.repository.OrderDetailsRepository;
+import com.org.shoppingcart.core.repository.ProductsRepository;
+import com.org.shoppingcart.core.request.ProductRequest;
+import com.org.shoppingcart.core.response.ProductResponse;
+import com.org.shoppingcart.core.service.ShoppingCartService;
+
+@Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+public class ShoppingCartServiceImpl implements ShoppingCartService {
+
+	private Logger logger;
+
+	@Autowired
+	private ProductsRepository productsRepository;
+
+	@Autowired
+	private OrderDetailsRepository orderDetailsRepository;
+
+	@Autowired
+	public ShoppingCartServiceImpl(ProductsRepository productsRepository,
+			OrderDetailsRepository orderDetailsRepository) {
+		super();
+		this.logger = LoggerFactory.getLogger(this.getClass());
+		this.productsRepository = productsRepository;
+		this.orderDetailsRepository = orderDetailsRepository;
+	}
+
+	@Override
+	@Cacheable(cacheNames = "findAllProducts")
+	public ProductResponse findAllProducts() throws ApplicationException {
+		try {
+			List<Products> productList = this.productsRepository.findAll();
+			List<ProductDto> productDtoList = new ArrayList<>();
+			DataDto dataDto = new DataDto();
+			for (Products product : productList) {
+				productDtoList.add(ProductDto.builder().id(product.getId()).name(product.getName())
+						.description(product.getDescription()).price(product.getPrice()).quantity(product.getQuantity())
+						.build());
+			}
+			dataDto.setProductList(productDtoList);
+			return ProductResponse.builder().dataDto(dataDto).status("Success").statusCode(200).build();
+		} catch (Exception e) {
+			return ProductResponse.builder().status("Failed").statusCode(0).build();
+		}
+	}
+
+	@Override
+	public boolean saveAll(ProductRequest request) throws ApplicationException {
+		try {
+			List<ItemDto> itemDetailsList = request.getItemList();
+			List<OrderDetails> orderDetailsList = new ArrayList<>();
+			if (!itemDetailsList.isEmpty()) {
+				for (ItemDto item : itemDetailsList) {
+					Optional<Products> poductById = this.productsRepository.findById(item.getProductDto().getId());
+					if (poductById.isPresent()) {
+						orderDetailsList.add(addOrderDetails(poductById.get(), item));
+						updateProductQuentity(poductById.get(), item.getQuantity());
+					} else {
+						logger.error("Error : Product Id Not Found : PID = " + item.getProductDto().getId());
+						throw new ApplicationException("Product Details Not Found");
+					}
+				}
+			}
+			this.orderDetailsRepository.saveAll(orderDetailsList);
+
+			return true;
+
+		} catch (Exception e) {
+			throw new ApplicationException("Product details adding failed");
+		}
+	}
+
+	private OrderDetails addOrderDetails(Products productDetails, ItemDto item) {
+		return OrderDetails.builder().name(productDetails.getName()).products(productDetails)
+				.amount(productDetails.getPrice()).quantity(item.getQuantity())
+				.description(productDetails.getDescription()).status(true).build();
+	}
+
+	private void updateProductQuentity(Products product, int itemQuentity) throws ApplicationException {
+		try {
+			if (product.getQuantity() >= itemQuentity) {
+				int currentQuentity = product.getQuantity() - itemQuentity;
+				product.setQuantity(currentQuentity);
+				productsRepository.save(product);
+			} else {
+				throw new ApplicationException("Products not exist");
+			}
+		} catch (Exception e) {
+			throw new ApplicationException("Product details adding failed");
+		}
+	}
+}

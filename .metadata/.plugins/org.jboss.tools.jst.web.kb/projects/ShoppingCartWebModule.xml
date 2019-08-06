@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kb-project>
+ <depends-on-projects/>
+ <used-by-projects/>
+ <paths>
+  <path value="C:/Users/Dimuthu/.m2/repository/org/projectlombok/lombok/1.18.8/lombok-1.18.8.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/org/springframework/spring-beans/5.1.8.RELEASE/spring-beans-5.1.8.RELEASE.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/org/springframework/spring-core/5.1.8.RELEASE/spring-core-5.1.8.RELEASE.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/org/springframework/spring-web/5.1.8.RELEASE/spring-web-5.1.8.RELEASE.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/com/sun/el/el-ri/1.0/el-ri-1.0.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/org/springframework/spring-jcl/5.1.8.RELEASE/spring-jcl-5.1.8.RELEASE.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/javax/servlet/jstl/1.2/jstl-1.2.jar">
+   <libraries>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/c-1_0-rt.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/c-1_0.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/c.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fmt-1_0-rt.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fmt-1_0.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fmt.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fn.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/permittedtaglibs.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/scriptfree.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/sql-1_0-rt.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/sql-1_0.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/sql.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/x-1_0-rt.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/x-1_0.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/x.tld" project="ShoppingCartWebModule"/>
+    </library>
+   </libraries>
+  </path>
+  <path value="C:/Users/Dimuthu/.m2/repository/com/sun/faces/jsf-api/2.1.7/jsf-api-2.1.7.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/com/sun/faces/jsf-impl/2.1.7/jsf-impl-2.1.7.jar">
+   <libraries>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/meta-inf/html_basic.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/meta-inf/jsf_core.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/meta-inf/mojarra_ext.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/meta-inf/mojarra_ext.tld" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/com/sun/faces/metadata/taglib/composite.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/com/sun/faces/metadata/taglib/facelets_jsf_core.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/com/sun/faces/metadata/taglib/html_basic.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/com/sun/faces/metadata/taglib/jstl-core.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/com/sun/faces/metadata/taglib/jstl-fn.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/com/sun/faces/metadata/taglib/mojarra_ext.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+    <library class="facelet">
+     <id class="model-object"
+      path="FileSystems/lib-jsf-impl-2.1.7.jar/com/sun/faces/metadata/taglib/ui.taglib.xml" project="ShoppingCartWebModule"/>
+    </library>
+   </libraries>
+  </path>
+  <path value="C:/Users/Dimuthu/.m2/repository/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar"/>
+  <path value="C:/Users/Dimuthu/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
+ </paths>
+ <validation>
+  <core validator-id="jsf-verification"/>
+  <core validator-id="jboss.cdi.core"/>
+  <el>
+   <linked-el length="65" name="%0" offset="438" path="%1"/>
+   <linked-el length="23" name="%2" offset="641" path="%3"/>
+   <linked-el length="16" name="%2" offset="831" path="%3"/>
+   <linked-el length="33" name="%2" offset="1134" path="%4"/>
+   <linked-el length="21" name="%2" offset="551" path="%3"/>
+   <linked-el length="30" name="%2" offset="407" path="%3"/>
+   <linked-el length="34" name="%2" offset="1223" path="%3"/>
+   <linked-el length="31" name="%2" offset="1527" path="%3"/>
+   <linked-el length="24" name="%2" offset="734" path="%3"/>
+   <linked-el length="40" name="%2" offset="926" path="%3"/>
+   <linked-el length="44" name="%2" offset="1101" path="%3"/>
+   <linked-el length="31" name="%5" offset="1393" path="%3"/>
+   <linked-el length="31" name="%5" offset="616" path="%1"/>
+   <linked-el length="64" name="%5" offset="487" path="%4"/>
+   <linked-el length="33" name="%6" offset="1134" path="%4"/>
+   <linked-el length="30" name="%6" offset="407" path="%3"/>
+   <linked-el length="34" name="%6" offset="1223" path="%3"/>
+   <linked-el length="31" name="%6" offset="1527" path="%3"/>
+   <linked-el length="44" name="%6" offset="1101" path="%3"/>
+   <linked-el length="31" name="%7" offset="1393" path="%3"/>
+   <linked-el length="16" name="%7" offset="915" path="%4"/>
+   <linked-el length="15" name="%7" offset="732" path="%4"/>
+   <linked-el length="33" name="%7" offset="1134" path="%4"/>
+   <linked-el length="31" name="%7" offset="616" path="%1"/>
+   <linked-el length="64" name="%7" offset="487" path="%4"/>
+   <linked-el length="22" name="%7" offset="823" path="%4"/>
+   <linked-el length="13" name="%7" offset="650" path="%4"/>
+   <linked-el length="17" name="%7" offset="1002" path="%4"/>
+   <linked-el length="64" name="%8" offset="487" path="%4"/>
+   <linked-el length="23" name="%9" offset="641" path="%3"/>
+   <linked-el length="16" name="%9" offset="831" path="%3"/>
+   <linked-el length="21" name="%9" offset="551" path="%3"/>
+   <linked-el length="24" name="%9" offset="734" path="%3"/>
+   <linked-el length="40" name="%9" offset="926" path="%3"/>
+   <linked-el length="44" name="%9" offset="1101" path="%3"/>
+   <linked-el length="65" name="%10" offset="438" path="%1"/>
+   <linked-el length="65" name="%11" offset="438" path="%1"/>
+   <linked-el length="23" name="%12" offset="641" path="%3"/>
+   <linked-el length="16" name="%12" offset="915" path="%4"/>
+   <linked-el length="15" name="%12" offset="732" path="%4"/>
+   <linked-el length="21" name="%12" offset="551" path="%3"/>
+   <linked-el length="24" name="%12" offset="734" path="%3"/>
+   <linked-el length="40" name="%12" offset="926" path="%3"/>
+   <linked-el length="22" name="%12" offset="823" path="%4"/>
+   <linked-el length="13" name="%12" offset="650" path="%4"/>
+   <linked-el length="17" name="%12" offset="1002" path="%4"/>
+   <linked-el length="64" name="%13" offset="487" path="%4"/>
+  </el>
+ </validation>
+ <aliases>
+  <alias path="CartManagedBean.productResponse" value="%0"/>
+  <alias path="cartManagedBean" value="%2"/>
+  <alias path="/ShoppingCartWebModule/src/main/webapp/index.xhtml" value="%4"/>
+  <alias
+   path="/ShoppingCartWebModule/src/main/java/com/rg/shoppingcart/bean/ProductManagedBean.java" value="%5"/>
+  <alias
+   path="/ShoppingCartWebModule/src/main/java/com/rg/shoppingcart/bean/CartManagedBean.java" value="%6"/>
+  <alias path="productManagedBean" value="%7"/>
+  <alias
+   path="/ShoppingCartWebModule/src/main/java/com/org/shoppingcart/dto/DataDto.java" value="%8"/>
+  <alias path="/ShoppingCartWebModule/src/main/webapp/status.xhtml" value="%1"/>
+  <alias
+   path="/ShoppingCartWebModule/src/main/java/com/org/shoppingcart/dto/ItemDto.java" value="%9"/>
+  <alias path="CartManagedBean" value="%10"/>
+  <alias path="CartManagedBean.productResponse.status" value="%11"/>
+  <alias path="/ShoppingCartWebModule/src/main/webapp/cart.xhtml" value="%3"/>
+  <alias
+   path="/ShoppingCartWebModule/src/main/java/com/org/shoppingcart/dto/ProductDto.java" value="%12"/>
+  <alias
+   path="/ShoppingCartWebModule/src/main/java/com/org/shoppingcart/response/ProductResponse.java" value="%13"/>
+ </aliases>
+ <includes/>
+ <uris>
+  <uri value="http://java.sun.com/jsf/core">
+   <prefix>f</prefix>
+  </uri>
+  <uri value="http://java.sun.com/jsf/html">
+   <prefix>h</prefix>
+  </uri>
+ </uris>
+</kb-project>
