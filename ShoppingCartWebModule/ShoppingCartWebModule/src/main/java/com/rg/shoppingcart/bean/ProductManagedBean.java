@@ -6,7 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.org.shoppingcart.controller.util.exception.ApplicationException;
-import com.org.shoppingcart.request.ProductRequest;
+import com.org.shoppingcart.request.ItemsRequest;
 import com.org.shoppingcart.response.ProductResponse;
 import com.org.shoppingcart.service.impl.ProductServiceImpl;
 
@@ -15,7 +15,7 @@ import com.org.shoppingcart.service.impl.ProductServiceImpl;
 public class ProductManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ProductRequest productDtos;
+	private ItemsRequest productDtos;
 	private ProductResponse productResponse;
 
 	public ProductManagedBean() throws ApplicationException {
@@ -31,11 +31,11 @@ public class ProductManagedBean implements Serializable {
 		return "index?faces-redirect=true";
 	}
 
-	public ProductRequest getProductDtos() {
+	public ItemsRequest getProductDtos() {
 		return productDtos;
 	}
 
-	public void setProductDtos(ProductRequest productDtos) {
+	public void setProductDtos(ItemsRequest productDtos) {
 		this.productDtos = productDtos;
 	}
 

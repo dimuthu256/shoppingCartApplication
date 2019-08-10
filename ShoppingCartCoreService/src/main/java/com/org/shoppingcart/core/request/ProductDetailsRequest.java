@@ -1,6 +1,9 @@
 package com.org.shoppingcart.core.request;
 
 import java.io.Serializable;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import com.org.shoppingcart.core.bean.ProductDto;
 
@@ -13,8 +16,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductRequest implements Serializable{
+public class ProductDetailsRequest implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private ProductDto productDto;
+	@Valid
+	private List<ProductDto> productList;
 }

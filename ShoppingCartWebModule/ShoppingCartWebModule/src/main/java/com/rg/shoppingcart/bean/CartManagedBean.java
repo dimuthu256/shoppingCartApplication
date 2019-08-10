@@ -9,7 +9,7 @@ import javax.faces.bean.SessionScoped;
 
 import com.org.shoppingcart.dto.ItemDto;
 import com.org.shoppingcart.dto.ProductDto;
-import com.org.shoppingcart.request.ProductRequest;
+import com.org.shoppingcart.request.ItemsRequest;
 import com.org.shoppingcart.response.ProductResponse;
 import com.org.shoppingcart.service.impl.ProductServiceImpl;
 
@@ -19,13 +19,13 @@ public class CartManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private ProductResponse productResponse;
-	private ProductRequest productDtos;
+	private ItemsRequest productDtos;
 
 	private List<ItemDto> itemDtos;
 
 	public CartManagedBean() {
 		this.itemDtos = new ArrayList<>();
-		productDtos = new ProductRequest();
+		productDtos = new ItemsRequest();
 		productResponse = new ProductResponse();
 	}
 
@@ -75,7 +75,7 @@ public class CartManagedBean implements Serializable {
 		try {
 			List<ItemDto> itemDtosList = this.itemDtos;
 			this.productResponse = productServiceImpl
-					.checkoutItems(ProductRequest.builder().itemList(itemDtosList).build());
+					.checkoutItems(ItemsRequest.builder().itemList(itemDtosList).build());
 			this.productResponse.setStatus(productResponse.getStatusCode() == 200 ? "Success" : "Failed");
 		} catch (Exception e) {
 			this.productResponse.setStatus("Failed");
@@ -100,11 +100,11 @@ public class CartManagedBean implements Serializable {
 		this.productResponse = productResponse;
 	}
 
-	public ProductRequest getProductDtos() {
+	public ItemsRequest getProductDtos() {
 		return productDtos;
 	}
 
-	public void setProductDtos(ProductRequest productDtos) {
+	public void setProductDtos(ItemsRequest productDtos) {
 		this.productDtos = productDtos;
 	}
 

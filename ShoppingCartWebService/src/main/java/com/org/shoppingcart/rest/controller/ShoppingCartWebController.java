@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.org.shoppingcart.rest.request.ProductRequest;
+import com.org.shoppingcart.rest.request.ItemsRequest;
 import com.org.shoppingcart.rest.response.ProductResponse;
 import com.org.shoppingcart.rest.service.ShoppingCartService;
 import com.org.shoppingcart.rest.service.impl.QueueMessageServiceImpl;
@@ -46,7 +46,7 @@ public class ShoppingCartWebController {
 
 	@CrossOrigin
 	@PostMapping(value = "products")
-	public ProductResponse saveAllProducts(@RequestBody ProductRequest productList) {
+	public ProductResponse saveAllProducts(@RequestBody ItemsRequest productList) {
 		logger.info("Begin method save all products");
 		ProductResponse response = new ProductResponse();
 		try {

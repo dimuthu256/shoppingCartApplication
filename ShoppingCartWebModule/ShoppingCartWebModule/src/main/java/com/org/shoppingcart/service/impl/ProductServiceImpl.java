@@ -14,7 +14,7 @@ import com.org.shoppingcart.controller.util.GsonUtil;
 import com.org.shoppingcart.controller.util.REST_CONTROLLER_URL;
 import com.org.shoppingcart.controller.util.ServiceManager;
 import com.org.shoppingcart.controller.util.exception.ApplicationException;
-import com.org.shoppingcart.request.ProductRequest;
+import com.org.shoppingcart.request.ItemsRequest;
 import com.org.shoppingcart.response.ProductResponse;
 
 public class ProductServiceImpl extends ServiceManager {
@@ -36,7 +36,7 @@ public class ProductServiceImpl extends ServiceManager {
 		}
 	}
 
-	public ProductResponse checkoutItems(ProductRequest productDtos) throws ApplicationException {
+	public ProductResponse checkoutItems(ItemsRequest productDtos) throws ApplicationException {
 		try {
 
 			final String restURL = CONTEXT_PATH + REST_CONTROLLER_URL.SUBMIT_SELECTED_ITEMS;
@@ -48,7 +48,7 @@ public class ProductServiceImpl extends ServiceManager {
 			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-			String request = GsonUtil.getToString(productDtos, ProductRequest.class);
+			String request = GsonUtil.getToString(productDtos, ItemsRequest.class);
 			// send request and parse result
 			HttpEntity<String> entity = new HttpEntity<>(request, headers);
 			ResponseEntity<String> response = restTemplate.exchange(restURL, HttpMethod.POST, entity, String.class);

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.org.shoppingcart.core.config.GsonUtil;
-import com.org.shoppingcart.core.request.ProductRequest;
+import com.org.shoppingcart.core.request.ItemsRequest;
 import com.org.shoppingcart.core.service.ShoppingCartService;
 import com.rabbitmq.client.Channel;
 
@@ -29,9 +29,9 @@ public class ShoppingCartMessageListener implements ChannelAwareMessageListener 
 	public void onMessage(Message message, Channel channel) throws Exception {
 		logger.info("Message received from the queue.");
 		try {
-			ProductRequest request = GsonUtil.getFromObject(new String(message.getBody()), ProductRequest.class);
-			logger.info("Message received from the queue : {}", request.toString());
-			boolean result = shoppingCartService.saveAll(request);
+			ItemsRequest request = GsonUtil.getFromObject(new String(message.getBody()), ItemsRequest.class);
+			logger.info("Message received from the queue : {}", request);
+			boolean result = shoppingCartService.saveAllItems(request);
 			// Acknowledge to delete from the queue
 			if (result) {
 				logger.info("Message executed successfully. \\n Channel clossing..");
@@ -41,6 +41,26 @@ public class ShoppingCartMessageListener implements ChannelAwareMessageListener 
 
 		} catch (Exception e) {
 			logger.error("Error occured while message processing. : {}", e.getMessage());
+		}
+	}
+
+	public boolean onMessage(String message) {
+		logger.info("Message received from the queue.");
+		boolean result = false;
+		try {
+			ItemsRequest request = GsonUtil.getFromObject(message, ItemsRequest.class);
+			logger.info("Message received from the queue : {}", request);
+			result = shoppingCartService.saveAllItems(request);
+			// Acknowledge to delete from the queue
+			if (result) {
+				logger.info("Message executed successfully. \\n Channel clossing..");
+				// channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+				logger.info("Channel closed..");
+			}
+			return result;
+		} catch (Exception e) {
+			logger.error("Error occured while message processing. : {}", e.getMessage());
+			return false;
 		}
 	}
 
