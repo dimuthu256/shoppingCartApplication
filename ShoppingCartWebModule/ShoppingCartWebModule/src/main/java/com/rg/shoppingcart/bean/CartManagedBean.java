@@ -7,6 +7,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.apache.log4j.Logger;
+
 import com.org.shoppingcart.dto.ItemDto;
 import com.org.shoppingcart.dto.ProductDto;
 import com.org.shoppingcart.request.ItemsRequest;
@@ -22,6 +24,8 @@ public class CartManagedBean implements Serializable {
 	private ItemsRequest productDtos;
 
 	private List<ItemDto> itemDtos;
+
+	private static final Logger logger = Logger.getLogger(CartManagedBean.class);
 
 	public CartManagedBean() {
 		this.itemDtos = new ArrayList<>();
@@ -71,6 +75,7 @@ public class CartManagedBean implements Serializable {
 
 	// checkout selected items
 	public String checkout() {
+		logger.info("Begin Method Checkout Item List.");
 		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 		try {
 			List<ItemDto> itemDtosList = this.itemDtos;
@@ -78,9 +83,11 @@ public class CartManagedBean implements Serializable {
 					.checkoutItems(ItemsRequest.builder().itemList(itemDtosList).build());
 			this.productResponse.setStatus(productResponse.getStatusCode() == 200 ? "Success" : "Failed");
 		} catch (Exception e) {
+			logger.error("Error in Checkout Item List. " + e.getMessage());
 			this.productResponse.setStatus("Failed");
 		}
 		this.itemDtos = new ArrayList<>();
+		logger.info("End Method Checkout Item List.");
 		return "status?faces-redirect=true";
 	}
 

@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<ui:include src="../common/style.xhtml" />
+	<ui:include src="../common/js.xhtml" />
+</h:head>
+
+<h:body>
+	<ui:include src="../common/header.xhtml" />
+	<ui:include src="../common/top_navigation.xhtml" />
+	<div class="ads-grid">
+		<div class="container">
+			<!-- tittle heading of products-->
+			<h3 class="tittle-w3l">
+				Happy Shopping with Fast Shopping <span class="heading-style">
+					<i></i> <i></i> <i></i>
+				</span>
+			</h3>
+			<!-- left panel-->
+			<ui:include src="../common/left.xhtml" />
+
+			<div class="agileinfo-ads-display col-md-9">
+				<div class="wrapper">
+					<div class="checkout-right">
+						<h4>Your shopping cart contains below Products</h4>
+					</div>
+					
+					<h:form prependId="false" id="defaultForm"
+						styleClass="form-horizontal ls_form">
+						<p:dataTable value="#{cartManagedBean.itemDtos}" var="item"
+							style="overflow-x:scroll;" paginator="true" rows="100"
+							styleClass="table table-bordered table-striped table-header">
+							<p:column style="width:13%;" align="center">
+								<f:facet name="header">PRODUCT ID</f:facet>#{item.productDto.id}</p:column>
+							<p:column style="width:25%;">
+								<f:facet name="header">NAME</f:facet>#{item.productDto.name}</p:column>
+							<p:column style="width:18%;" align="center">
+								<f:facet name="header">PRICE</f:facet>#{item.productDto.price}</p:column>
+							<p:column style="width:14%;" align="center">
+								<f:facet name="header">QUANTITY</f:facet>#{item.quantity}</p:column>
+							<p:column style="width:15%;" align="center">
+
+								<f:facet name="header">SUB TOTAL</f:facet>#{item.productDto.price * item.quantity}</p:column>
+							<p:column align="center" style="width:15%;">
+								<f:facet name="header">REMOVE</f:facet>
+								<h:commandButton value="X"
+									action="#{cartManagedBean.delete(item.productDto)}"></h:commandButton>
+							</p:column>
+						</p:dataTable>
+						<h:outputLabel>
+							<div class="wrapper">
+								<div class="checkout-right">
+									<h4>Total Amount : #{cartManagedBean.total()}</h4>
+								</div>
+							</div>
+						</h:outputLabel>
+						<br />
+						<br />
+						<h:commandButton value="CONTINUE SHOPPING" type="submit"
+							style="margin:6px;" action="#{productManagedBean.index()}"></h:commandButton>
+						<h:commandButton value="CHECK OUT" type="submit"
+							style="margin:6px;" action="#{cartManagedBean.checkout()}"></h:commandButton>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ui:include src="../common/footer.xhtml" />
+</h:body>
+
+</html>

@@ -29,7 +29,7 @@ public class ShoppingCartServiceImpl extends ServiceManager implements ShoppingC
 	}
 
 	@Override
-	@HystrixCommand(fallbackMethod = "fallBackExecutor")
+	@HystrixCommand(fallbackMethod = "fallBackExecutor", commandKey = "findAllProducts", groupKey = "shoppingCart")
 	public ProductResponse findAllProducts() {
 		logger.info("Begin Method Find All Products Service");
 		restTemplate = new RestTemplate();

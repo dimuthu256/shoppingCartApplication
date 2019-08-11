@@ -36,9 +36,9 @@ public class QueueMessageServiceImpl {
 	}
 
 	public void send(ItemsRequest products) {
-		logger.info("Message is ready to send : {}", products.toString());
+		logger.info("Message is ready to send... : {}", products);
 		amqpTemplate.convertAndSend(exchange, routingkey, products);
-		logger.info("Message sent to the queue : {}", products.toString());
+		logger.info("Message sent to the queue... : {}", products);
 
 	}
 }
