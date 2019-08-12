@@ -1,15 +1,24 @@
 package com.org.shoppingcart.core.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.org.shoppingcart.core.bean.DataDto;
 import com.org.shoppingcart.core.bean.ItemDto;
@@ -21,8 +30,8 @@ import com.org.shoppingcart.core.exception.ApplicationException;
 import com.org.shoppingcart.core.repository.OrderDetailsRepository;
 import com.org.shoppingcart.core.repository.ProductsRepository;
 import com.org.shoppingcart.core.request.ItemsRequest;
-import com.org.shoppingcart.core.request.ProductDetailsRequest;
 import com.org.shoppingcart.core.request.ProductRequest;
+import com.org.shoppingcart.core.response.ImageResponse;
 import com.org.shoppingcart.core.response.ProductResponse;
 import com.org.shoppingcart.core.service.ShoppingCartService;
 
@@ -40,6 +49,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
 	@Autowired
 	private MessageConfig messageConfig;
+
+	@Value("${image.save.path}")
+	private String imagePath;
+
+	@Value("${service.url.path}")
+	private String serviceUrlPath;
 
 	@Autowired
 	public ShoppingCartServiceImpl(ProductsRepository productsRepository,
@@ -83,14 +98,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		}
 	}
 
-	public ProductResponse addNewProducts(ProductDetailsRequest productDetailsRequest) throws ApplicationException {
+	public ProductResponse addNewProduct(MultipartFile multipartFile, ProductRequest productRequest)
+			throws ApplicationException {
 		try {
 			logger.info("Begin method add products");
 			ProductResponse response = new ProductResponse();
-			if (!productDetailsRequest.getProductList().isEmpty()) {
-				this.productsRepository.saveAll(generateAddPayload(productDetailsRequest.getProductList()));
-				response.setStatus(messageConfig.getSuccess());
-				response.setStatusCode(200);
+			if (productRequest != null) {
+				Products productResponse = this.productsRepository
+						.save(generateAddPayload(productRequest.getProductDto(), saveImage(multipartFile)));
+				if (productResponse.getId() > 0) {
+					response.setStatus(messageConfig.getSuccess());
+					response.setStatusCode(200);
+				}
 			}
 			return response;
 		} catch (Exception e) {
@@ -141,19 +160,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		}
 	}
 
-	private List<Products> generateAddPayload(List<ProductDto> reqProductList) {
-		List<Products> productDetailsList = new ArrayList<>();
-		for (ProductDto productList : reqProductList) {
-			Products product = new Products();
-			product.setName(productList.getName());
-			product.setPrice(productList.getPrice());
-			product.setQuantity(productList.getQuantity());
-			product.setDescription(productList.getDescription());
-			product.setImage(productList.getImage());
-			product.setStatus(productList.isStatus());
-			productDetailsList.add(product);
-		}
-		return productDetailsList;
+	private Products generateAddPayload(ProductDto reqProductList, ImageResponse saveImgDetails) {
+
+		Products product = new Products();
+		product.setName(reqProductList.getName());
+		product.setPrice(reqProductList.getPrice());
+		product.setQuantity(reqProductList.getQuantity());
+		product.setDescription(reqProductList.getDescription());
+		product.setImage(saveImgDetails.getImageUrl());
+		product.setStatus(reqProductList.isStatus());
+
+		return product;
 	}
 
 	private Products generateUpdatePayload(Products productById, ProductDto productList) {
@@ -201,7 +218,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 			for (Products product : productList) {
 				productDtoList.add(ProductDto.builder().id(product.getId()).name(product.getName())
 						.description(product.getDescription()).price(product.getPrice()).quantity(product.getQuantity())
-						.status(product.isStatus()).build());
+						.status(product.isStatus()).image(serviceUrlPath + product.getImage()).build());
 			}
 		} catch (Exception e) {
 			throw new ApplicationException(messageConfig.getProductDetailsAddingFailed());
@@ -247,6 +264,58 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 			}
 		} catch (Exception e) {
 			throw new ApplicationException(messageConfig.getProductDetailsAddingFailed());
+		}
+	}
+
+	public ImageResponse saveImage(MultipartFile multipartFile) {
+		String fileName = multipartFile.getOriginalFilename();
+		String ext = FilenameUtils.getExtension(fileName);
+		String fileNameString = FilenameUtils.getBaseName(fileName);
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		String fileNameSave = fileNameString + new Date().getTime() + "." + ext;
+		String imagePathString = imagePath + fileNameSave;
+		int read = 0;
+		byte[] bytes = new byte[1024];
+		try {
+
+			if (!multipartFile.isEmpty()) {
+				createDerectory(imagePath);
+				inputStream = multipartFile.getInputStream();
+				outputStream = new FileOutputStream(new File(imagePathString));
+				while ((read = inputStream.read(bytes)) != -1) {
+					outputStream.write(bytes, 0, read);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		}
+		return new ImageResponse("/images/" + fileNameSave);
+	}
+
+	private void createDerectory(String tempLocation) {
+		File directory = new File(tempLocation);
+		if (!directory.exists()) {
+			logger.info("Create directory ");
+			directory.mkdirs();
 		}
 	}
 

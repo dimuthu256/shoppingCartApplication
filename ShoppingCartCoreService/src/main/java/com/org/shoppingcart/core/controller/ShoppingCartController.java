@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.org.shoppingcart.core.bean.ProductDto;
 import com.org.shoppingcart.core.exception.ApplicationException;
-import com.org.shoppingcart.core.request.ProductDetailsRequest;
 import com.org.shoppingcart.core.request.ProductRequest;
 import com.org.shoppingcart.core.response.ProductResponse;
 import com.org.shoppingcart.core.service.ShoppingCartService;
@@ -61,12 +64,19 @@ public class ShoppingCartController {
 		}
 	}
 
+	//@CrossOrigin
 	@PostMapping()
 	@ApiOperation("Add New Products")
-	public ProductResponse addNewProducts(@Valid @RequestBody ProductDetailsRequest productDetailsRequest) {
+	public ProductResponse addNewProducts(@RequestParam("image") MultipartFile multipartFile,
+			@RequestParam("productName") String productName, @RequestParam("productDescription") String productDesc,
+			@RequestParam("productPrice") double price, @RequestParam("productQuentity") int quentity,
+			@RequestParam("productStatus") boolean status) {
 		logger.info("Begin method add products");
 		try {
-			return this.shoppingCartService.addNewProducts(productDetailsRequest);
+			ProductRequest productDetailsRequest = new ProductRequest();
+			productDetailsRequest.setProductDto(ProductDto.builder().name(productName).description(productDesc)
+					.price(price).quantity(quentity).status(status).build());
+			return this.shoppingCartService.addNewProduct(multipartFile, productDetailsRequest);
 		} catch (ApplicationException e) {
 			logger.error("Error method find all products : {}", e.getMessage());
 			return ProductResponse.builder().status(e.getMessage()).statusCode(0).build();

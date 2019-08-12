@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<ui:include src="../common/style.xhtml" />
+	<ui:include src="../common/js.xhtml" />
+</h:head>
+
+<h:body>
+	<ui:include src="../common/header.xhtml" />
+	<ui:include src="../common/top_navigation.xhtml" />
+	<div class="ads-grid">
+		<div class="container">
+			<!-- tittle heading of products-->
+			<h3 class="tittle-w3l">
+				Happy Shopping with Fast Shopping <span class="heading-style">
+					<i></i> <i></i> <i></i>
+				</span>
+			</h3>
+			<!-- left panel-->
+			<ui:include src="../common/left.xhtml" />
+			<div class="agileinfo-ads-display col-md-9">
+				<div class="wrapper">
+					<br />
+					<h3>Add New Product</h3>
+					<br /> <br />
+					<h:form enctype="multipart/form-data" class="form-horizontal">
+
+						<div class="form-group">
+							<label class="control-label col-sm-4">Product Name<span
+								style="color: red;"> *</span></label>
+							<div class="col-sm-8">
+								<h:inputText id="productName" value="#{uploadBean.product.name}"
+									styleClass="form-control" required="true"
+									requiredMessage="value required" />
+								<h:message for="productName" style="color: red;"
+									id="msgProductName"></h:message>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-4">Price ($)<span
+								style="color: red;"> *</span></label>
+							<div class="col-sm-8">
+								<h:inputText id="price" value="#{uploadBean.product.price}"
+									styleClass="form-control" required="true"
+									requiredMessage="value required" />
+								<h:message for="price" style="color: red;" id="msgPrice"></h:message>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-4">Product Quantity<span
+								style="color: red;"> *</span></label>
+							<div class="col-sm-8">
+								<h:inputText id="productQuantity"
+									value="#{uploadBean.product.quantity}"
+									styleClass="form-control" required="true"
+									requiredMessage="value required" />
+								<h:message for="productQuantity" style="color: red;"
+									id="msgProductQuantity"></h:message>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-4">Product Description<span
+								style="color: red;"> *</span></label>
+							<div class="col-sm-8">
+								<h:inputText id="productDescription"
+									value="#{uploadBean.product.description}"
+									styleClass="form-control" required="true"
+									requiredMessage="value required" />
+								<h:message for="productDescription" style="color: red;"
+									id="msgProductDescription"></h:message>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-4">Product Status</label>
+							<div class="col-sm-8 form-check form-check-inline">
+								<input class="form-check-input" type="checkbox"
+									checked="checked" id="chkBoxProductStatus"
+									value="#{uploadBean.product.status}"></input> <label
+									class="form-check-label" for="chkBoxProductStatus">Active</label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-4">Product Image<span
+								style="color: red;"> *</span></label>
+							<div class="col-sm-8">
+								<p:fileUpload value="#{uploadBean.imageFile}" mode="simple"
+									class="col-sm-8" update="msgImage" required="true"
+									allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+							</div>
+							<p:growl id="msgImage" showDetail="true" />
+						</div>
+
+						<br />
+						<div class="col-lg-9 col-lg-offset-3">
+							<!-- action which is responsible for uploading file(s) -->
+							<h:commandButton action="#{uploadBean.uploadFile}" value="Submit"
+								class="button2" ajax="false"></h:commandButton>
+						</div>
+
+						<br />
+						<br />
+						<!-- Shows the error or success message -->
+						<div class="form-group control-label col-sm-8">
+							<h:outputText value="#{uploadBean.message}"
+								rendered="#{!empty uploadBean.message}" style="color: red;"></h:outputText>
+							<!-- notice the enctype for file upload -->
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ui:include src="../common/footer.xhtml" />
+</h:body>
+
+</html>

@@ -31,7 +31,7 @@ public class Products implements Serializable {
     private int id;
     @Column(nullable=false, length=20)
     private String name;
-    private byte[] image;
+    private String image;
     @Column(nullable=false, length=255)
     private String description;
     @Column(nullable=false, precision=22)
@@ -87,23 +87,6 @@ public class Products implements Serializable {
         name = aName;
     }
 
-    /**
-     * Access method for image.
-     *
-     * @return the current value of image
-     */
-    public byte[] getImage() {
-        return image;
-    }
-
-    /**
-     * Setter method for image.
-     *
-     * @param aImage the new value for image
-     */
-    public void setImage(byte[] aImage) {
-        image = aImage;
-    }
 
     /**
      * Access method for description.
@@ -205,7 +188,15 @@ public class Products implements Serializable {
         orderDetails = aOrderDetails;
     }
 
-    /**
+    public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	/**
      * Compares the key for this instance with another Products.
      *
      * @param other The object to compare to

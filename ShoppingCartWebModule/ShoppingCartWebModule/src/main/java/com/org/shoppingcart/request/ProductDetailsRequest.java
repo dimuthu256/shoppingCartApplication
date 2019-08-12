@@ -1,6 +1,7 @@
 package com.org.shoppingcart.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.org.shoppingcart.dto.ProductDto;
 
@@ -13,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductRequest implements Serializable{
+public class ProductDetailsRequest implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private ProductDto productDto;
+	private List<ProductDto> productList;
 }

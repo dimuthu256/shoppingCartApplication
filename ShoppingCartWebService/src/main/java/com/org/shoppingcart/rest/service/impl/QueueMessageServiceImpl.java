@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.org.shoppingcart.rest.request.ItemsRequest;
+import com.org.shoppingcart.rest.request.ProductDetailsRequest;
 
 @Service
 public class QueueMessageServiceImpl {
@@ -36,6 +37,13 @@ public class QueueMessageServiceImpl {
 	}
 
 	public void send(ItemsRequest products) {
+		logger.info("Message is ready to send... : {}", products);
+		amqpTemplate.convertAndSend(exchange, routingkey, products);
+		logger.info("Message sent to the queue... : {}", products);
+
+	}
+	
+	public void send(ProductDetailsRequest products) {
 		logger.info("Message is ready to send... : {}", products);
 		amqpTemplate.convertAndSend(exchange, routingkey, products);
 		logger.info("Message sent to the queue... : {}", products);

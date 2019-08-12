@@ -29,7 +29,6 @@ public class ShoppingCartWebServiceTests {
 	}
 
 	
-	
 	public void findAllProducts() {
 		try {
 			ProductResponse response = shoppingCartService.findAllProducts();

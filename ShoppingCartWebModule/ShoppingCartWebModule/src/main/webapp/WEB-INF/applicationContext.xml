@@ -15,4 +15,5 @@
 	<context:component-scan base-package="com.org.shoppingcart.*" />
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
+	
 </beans>

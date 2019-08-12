@@ -27,7 +27,7 @@ public class ProductDto implements Serializable {
 	@NotNull(message = "quantity cannot be null")
 	@ApiModelProperty(required = true, value = "required field")
 	private int quantity;
-	private byte[] image;
+	private String image;
 	private String description;
 	private boolean status;
 
