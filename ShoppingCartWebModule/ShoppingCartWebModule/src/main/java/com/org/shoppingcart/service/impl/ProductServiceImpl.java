@@ -31,7 +31,7 @@ public class ProductServiceImpl extends ServiceManager {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(ProductServiceImpl.class);
-	private String tempLocation = "D:/shopping_cart_tmp/tmp0/";
+	private String tempLocation = IMG_UPLOAD_FILE_PATH;
 
 	public ProductResponse findAll() throws ApplicationException {
 		try {
@@ -53,15 +53,9 @@ public class ProductServiceImpl extends ServiceManager {
 			final String restURL = CONTEXT_PATH + REST_CONTROLLER_URL.SUBMIT_SELECTED_ITEMS;
 			logger.info("Submit All Rest Service URL :" + restURL);
 			RestTemplate restTemplate = new RestTemplate();
-
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
 			String request = GsonUtil.getToString(productDtos, ItemsRequest.class);
 			// send request and parse result
-			HttpEntity<String> entity = new HttpEntity<>(request, headers);
+			HttpEntity<String> entity = new HttpEntity<>(request, headers());
 			ResponseEntity<String> response = restTemplate.exchange(restURL, HttpMethod.POST, entity, String.class);
 			return GsonUtil.getFromObject(response.getBody(), ProductResponse.class);
 
@@ -73,28 +67,19 @@ public class ProductServiceImpl extends ServiceManager {
 
 	public ProductResponse addNewProduct(UploadedFile imageFile, ProductRequest productDetailsRequest)
 			throws ApplicationException {
-
 		try {
 			final String restURL = CONTEXT_PATH + REST_CONTROLLER_URL.ADD_NEW_PRODUCT;
-			
-			File directory = new File(tempLocation);
-			if (!directory.exists()) {
-				logger.info("Create directory ");
-				directory.mkdirs();
-			}
-			byte[] bytes=imageFile.getContents();
+			// create new directory to img upload
+			createDirectory(tempLocation);
+			byte[] bytes = imageFile.getContents();
 			String filename = FilenameUtils.getName(imageFile.getFileName());
-            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(tempLocation+filename)));
-            stream.write(bytes);
-            stream.close();
-            
+			BufferedOutputStream stream = new BufferedOutputStream(
+					new FileOutputStream(new File(tempLocation + filename)));
+			stream.write(bytes);
+			stream.close();
 			// Original file name
 			String originalFileName = StringUtils.cleanPath(imageFile.getFileName());
 
-			restTemplate = new RestTemplate();
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-			
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 			body.add("image", new FileSystemResource(createFilePath(tempLocation, originalFileName)));
 			body.add("productName", productDetailsRequest.getProductDto().getName());
@@ -103,9 +88,10 @@ public class ProductServiceImpl extends ServiceManager {
 			body.add("productQuentity", productDetailsRequest.getProductDto().getQuantity());
 			body.add("productStatus", productDetailsRequest.getProductDto().isStatus());
 
-			HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
-			ResponseEntity<ProductResponse> responseEntity = restTemplate.exchange(
-					restURL, HttpMethod.POST, entity, ProductResponse.class);
+			restTemplate = new RestTemplate();
+			HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, multipartHeader());
+			ResponseEntity<ProductResponse> responseEntity = restTemplate.exchange(restURL, HttpMethod.POST, entity,
+					ProductResponse.class);
 			return responseEntity.getBody();
 
 		} catch (Exception e) {
@@ -113,12 +99,34 @@ public class ProductServiceImpl extends ServiceManager {
 			throw new ApplicationException("Error Occured in Product Service addNewProduct");
 		}
 	}
-	
+
 	private String createFilePath(String filePath, String fileName) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(filePath);
 		builder.append(fileName);
 		return builder.toString();
+	}
+
+	private HttpHeaders headers() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		return headers;
+	}
+
+	private HttpHeaders multipartHeader() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		return headers;
+	}
+
+	private void createDirectory(String tempLocation) {
+		File directory = new File(tempLocation);
+		if (!directory.exists()) {
+			logger.info("Create directory ");
+			directory.mkdirs();
+		}
 	}
 
 }

@@ -42,7 +42,7 @@ public class QueueMessageServiceImpl {
 		logger.info("Message sent to the queue... : {}", products);
 
 	}
-	
+
 	public void send(ProductDetailsRequest products) {
 		logger.info("Message is ready to send... : {}", products);
 		amqpTemplate.convertAndSend(exchange, routingkey, products);

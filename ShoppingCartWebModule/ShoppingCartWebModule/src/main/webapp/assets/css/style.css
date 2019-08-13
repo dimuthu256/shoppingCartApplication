@@ -931,7 +931,7 @@ input.checked {
 /*-- product right --*/
 /*-- nuts --*/
 .product-sec1 {
-    box-shadow: 0px 0px 15px 0px #D6D6D6;
+    box-shadow: 0px 0px 2px 0px #D6D6D6;
     padding: 30px 20px;
     margin-bottom: 14px;
 }
@@ -1007,7 +1007,7 @@ h3.w3l-nut-middle {
 }
 /*-- //nuts --*/
 .ads-grid, footer, .contact-w3l, .w3_wthree_agileits_icons, .typo, .faqs-w3l, .terms-of-use, .welcome, .about, .banner-bootom-w3-agileits, .privacy {
-    padding: 5em 0;
+    padding: 3em 0;
 }
 /*-- tittle heading --*/
 h3.tittle-w3l {

@@ -16,17 +16,17 @@ public class MessageConfig {
 
 	@Value("${shoppingcart.methodnotsupported.message}")
 	private String httpRequestMethodNotSupported;
-	
+
 	@Value("${shoppingcart.product.details.notfound}")
 	private String productDetailsNotFound;
-	
+
 	@Value("${shoppingcart.status.success}")
 	private String success;
-	
+
 	@Value("${shoppingcart.status.failed}")
 	private String failed;
-	
+
 	@Value("${shoppingcart.product.details.add.filed}")
 	private String productDetailsAddingFailed;
-	
+
 }

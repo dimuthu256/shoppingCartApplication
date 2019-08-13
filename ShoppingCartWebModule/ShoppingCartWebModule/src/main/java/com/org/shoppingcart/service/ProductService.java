@@ -13,5 +13,6 @@ public interface ProductService {
 
 	public ProductResponse checkoutItems(ItemsRequest productDtos) throws ApplicationException;
 
-	public ProductResponse addNewProduct(UploadedFile multipartFile,ProductDetailsRequest productDetailsRequest) throws ApplicationException;
+	public ProductResponse addNewProduct(UploadedFile multipartFile, ProductDetailsRequest productDetailsRequest)
+			throws ApplicationException;
 }

@@ -25,16 +25,16 @@
 			<!-- left panel-->
 			<ui:include src="../common/left.xhtml" />
 
-			<div class="agileinfo-ads-display col-md-9">
+			<div class="agileinfo-ads-display col-md-9 product-sec1">
 				<div class="wrapper">
 					<div class="checkout-right">
 						<h4>Your shopping cart contains below Products</h4>
 					</div>
-					
+
 					<h:form prependId="false" id="defaultForm"
 						styleClass="form-horizontal ls_form">
 						<p:dataTable value="#{cartManagedBean.itemDtos}" var="item"
-							style="overflow-x:scroll;" paginator="true" rows="100"
+							style="overflow-x:scroll;"
 							styleClass="table table-bordered table-striped table-header">
 							<p:column style="width:13%;" align="center">
 								<f:facet name="header">PRODUCT ID</f:facet>#{item.productDto.id}</p:column>

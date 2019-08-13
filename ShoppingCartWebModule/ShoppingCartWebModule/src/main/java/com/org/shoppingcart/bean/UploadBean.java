@@ -6,6 +6,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.web.context.annotation.RequestScope;
@@ -25,8 +26,9 @@ public class UploadBean implements Serializable {
 	private String message;
 	private ProductDto product;
 	private ProductRequest productRequest;
-
 	private UploadedFile imageFile;
+
+	private static final Logger logger = Logger.getLogger(UploadBean.class);
 
 	public UploadBean() {
 		this.product = new ProductDto();
@@ -34,15 +36,21 @@ public class UploadBean implements Serializable {
 	}
 
 	public String uploadFile() throws ApplicationException {
+		logger.info("Bigin [UploadBean] method upload file");
 		if (imageFile != null) {
 			try {
-				submitProductDetails(imageFile);
-				return "index?faces-redirect=true";
+				ProductResponse response = submitProductDetails(imageFile);
+				if (response.getStatusCode() == 200) {
+					return "index?faces-redirect=true";
+				} else {
+					setMessage("Error, Product details add failed");
+				}
 			} catch (Exception e) {
-				setMessage("Error, Error occured in File updating to the database");
+				logger.error("Error : " + e.getMessage());
+				setMessage("Error, Error occured in Product details submitting to the database");
 			}
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("file not found"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("File not found"));
 			setMessage("Error, File Not Found");
 		}
 		return null;
@@ -52,6 +60,7 @@ public class UploadBean implements Serializable {
 		ProductServiceImpl productServiceImpl = new ProductServiceImpl();
 		this.product.setStatus(true);
 		this.productRequest.setProductDto(this.product);
+		// submit product details
 		return productServiceImpl.addNewProduct(imageFile, this.productRequest);
 	}
 

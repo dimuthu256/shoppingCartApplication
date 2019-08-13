@@ -66,6 +66,26 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 	}
 
 	@Override
+	public ProductResponse addNewProduct(MultipartFile multipartFile, ProductRequest productRequest)
+			throws ApplicationException {
+		try {
+			logger.info("Begin method add products");
+			ProductResponse response = new ProductResponse();
+			if (productRequest != null) {
+				Products productResponse = this.productsRepository.save(generateAddPayload(
+						productRequest.getProductDto(), multipartFile == null ? null : saveImage(multipartFile)));
+				if (productResponse.getId() > 0) {
+					response.setStatus(messageConfig.getSuccess());
+					response.setStatusCode(200);
+				}
+			}
+			return response;
+		} catch (Exception e) {
+			throw new ApplicationException("Error in add products");
+		}
+	}
+
+	@Override
 	public ProductResponse findAllProducts() throws ApplicationException {
 		try {
 			logger.info("Begin method find all products");
@@ -98,28 +118,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		}
 	}
 
-	public ProductResponse addNewProduct(MultipartFile multipartFile, ProductRequest productRequest)
-			throws ApplicationException {
-		try {
-			logger.info("Begin method add products");
-			ProductResponse response = new ProductResponse();
-			if (productRequest != null) {
-				Products productResponse = this.productsRepository
-						.save(generateAddPayload(productRequest.getProductDto(), saveImage(multipartFile)));
-				if (productResponse.getId() > 0) {
-					response.setStatus(messageConfig.getSuccess());
-					response.setStatusCode(200);
-				}
-			}
-			return response;
-		} catch (Exception e) {
-			throw new ApplicationException("Error in add products");
-		}
-	}
-
+	@Override
 	public ProductResponse updateProductById(ProductRequest productRequest) throws ApplicationException {
 		try {
-			logger.info("Begin method update product");
+			logger.info("Begin method update product by id");
 			ProductResponse response = new ProductResponse();
 			Optional<Products> productById = this.productsRepository.findById(productRequest.getProductDto().getId());
 			if (productById.isPresent()) {
@@ -132,7 +134,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 			}
 			return response;
 		} catch (Exception e) {
-			throw new ApplicationException("Error in update product");
+			throw new ApplicationException("Error in update product by id");
 		}
 	}
 
@@ -158,30 +160,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		} catch (Exception e) {
 			throw new ApplicationException("Error in delete product");
 		}
-	}
-
-	private Products generateAddPayload(ProductDto reqProductList, ImageResponse saveImgDetails) {
-
-		Products product = new Products();
-		product.setName(reqProductList.getName());
-		product.setPrice(reqProductList.getPrice());
-		product.setQuantity(reqProductList.getQuantity());
-		product.setDescription(reqProductList.getDescription());
-		product.setImage(saveImgDetails.getImageUrl());
-		product.setStatus(reqProductList.isStatus());
-
-		return product;
-	}
-
-	private Products generateUpdatePayload(Products productById, ProductDto productList) {
-		Products product = productById;
-		product.setName(productList.getName());
-		product.setPrice(productList.getPrice());
-		product.setQuantity(productList.getQuantity());
-		product.setDescription(productList.getDescription());
-		product.setImage(productList.getImage());
-		product.setStatus(productList.isStatus());
-		return product;
 	}
 
 	@Override
@@ -211,6 +189,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 		}
 	}
 
+	
 	private List<ProductDto> addProductDetails(List<Products> productList) throws ApplicationException {
 		logger.info("Begin method add product details");
 		List<ProductDto> productDtoList = new ArrayList<>();
@@ -218,7 +197,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 			for (Products product : productList) {
 				productDtoList.add(ProductDto.builder().id(product.getId()).name(product.getName())
 						.description(product.getDescription()).price(product.getPrice()).quantity(product.getQuantity())
-						.status(product.isStatus()).image(serviceUrlPath + product.getImage()).build());
+						.status(product.isStatus())
+						.image(serviceUrlPath.concat(product.getImage() == null ? "" : product.getImage())).build());
 			}
 		} catch (Exception e) {
 			throw new ApplicationException(messageConfig.getProductDetailsAddingFailed());
@@ -268,18 +248,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 	}
 
 	public ImageResponse saveImage(MultipartFile multipartFile) {
-		String fileName = multipartFile.getOriginalFilename();
-		String ext = FilenameUtils.getExtension(fileName);
-		String fileNameString = FilenameUtils.getBaseName(fileName);
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
-		String fileNameSave = fileNameString + new Date().getTime() + "." + ext;
-		String imagePathString = imagePath + fileNameSave;
-		int read = 0;
-		byte[] bytes = new byte[1024];
+		String fileNameSave = "";
 		try {
-
 			if (!multipartFile.isEmpty()) {
+				String fileName = multipartFile.getOriginalFilename();
+				String ext = FilenameUtils.getExtension(fileName);
+				String fileNameString = FilenameUtils.getBaseName(fileName);
+				fileNameSave = fileNameString + new Date().getTime() + "." + ext;
+				String imagePathString = imagePath + fileNameSave;
+				int read = 0;
+				byte[] bytes = new byte[1024];
+
 				createDerectory(imagePath);
 				inputStream = multipartFile.getInputStream();
 				outputStream = new FileOutputStream(new File(imagePathString));
@@ -288,14 +269,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Error : {}", e.getMessage());
 			return null;
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error("Error : {}", e.getMessage());
 					return null;
 				}
 			}
@@ -303,12 +284,35 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 				try {
 					outputStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error("Error : {}", e.getMessage());
 					return null;
 				}
 			}
 		}
 		return new ImageResponse("/images/" + fileNameSave);
+	}
+
+	private Products generateAddPayload(ProductDto reqProductList, ImageResponse saveImgDetails) {
+		Products product = new Products();
+		product.setName(reqProductList.getName());
+		product.setPrice(reqProductList.getPrice());
+		product.setQuantity(reqProductList.getQuantity());
+		product.setDescription(reqProductList.getDescription());
+		product.setImage(saveImgDetails != null ? saveImgDetails.getImageUrl() : null);
+		product.setStatus(reqProductList.isStatus());
+
+		return product;
+	}
+
+	private Products generateUpdatePayload(Products productById, ProductDto productList) {
+		Products product = productById;
+		product.setName(productList.getName());
+		product.setPrice(productList.getPrice());
+		product.setQuantity(productList.getQuantity());
+		product.setDescription(productList.getDescription());
+		product.setImage(productList.getImage() == null ? productById.getImage() : productList.getImage());
+		product.setStatus(productList.isStatus());
+		return product;
 	}
 
 	private void createDerectory(String tempLocation) {

@@ -14,5 +14,5 @@ public class ItemDto {
 	private ProductDto productDto;
 	private int quantity;
 	private double totalAmount;
-	
+
 }

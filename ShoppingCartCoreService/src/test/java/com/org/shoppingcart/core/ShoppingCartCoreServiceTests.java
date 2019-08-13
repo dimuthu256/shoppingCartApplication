@@ -3,9 +3,6 @@ package com.org.shoppingcart.core;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -19,7 +16,6 @@ import com.org.shoppingcart.core.bean.ProductDto;
 import com.org.shoppingcart.core.config.MessageConfig;
 import com.org.shoppingcart.core.controller.ShoppingCartController;
 import com.org.shoppingcart.core.controller.ShoppingCartMessageListener;
-import com.org.shoppingcart.core.request.ProductDetailsRequest;
 import com.org.shoppingcart.core.request.ProductRequest;
 import com.org.shoppingcart.core.response.ProductResponse;
 
@@ -52,19 +48,13 @@ public class ShoppingCartCoreServiceTests {
 	@Order(2)
 	public void addNewProducts_s1() {
 		try {
-			ProductDetailsRequest productDetailsRequest = new ProductDetailsRequest();
-			List<ProductDto> productDtoList = new ArrayList<ProductDto>();
-			for (int i = 1; i < 10; i++) {
-				productDtoList.add(ProductDto.builder().name("item_" + i).description("item_desc_" + i).price(i * 100)
-						.quantity(i * 10).status(true).build());
-			}
-			productDetailsRequest.setProductList(productDtoList);
-			/*
-			 * ProductResponse response =
-			 * shoppingCartController.addNewProducts(productDetailsRequest);
-			 * assertEquals(200, response.getStatusCode());
-			 * assertEquals(messageConfig.getSuccess(), response.getStatus());
-			 */
+			ProductDto product = ProductDto.builder().name("item_1").description("item_desc_1").price(100).quantity(10)
+					.status(true).build();
+			ProductResponse response = shoppingCartController.addNewProducts(null, product.getName(),
+					product.getDescription(), product.getPrice(), product.getQuantity(), product.isStatus());
+			assertEquals(200, response.getStatusCode());
+			assertEquals(messageConfig.getSuccess(), response.getStatus());
+
 		} catch (Exception e) {
 			assert false;
 		}
@@ -73,19 +63,13 @@ public class ShoppingCartCoreServiceTests {
 	@Test
 	@Order(3)
 	public void addNewProducts_f1() {
-		ProductDetailsRequest productDetailsRequest = new ProductDetailsRequest();
 		try {
-			List<ProductDto> productDtoList = new ArrayList<ProductDto>();
-			for (int i = 1; i < 10; i++) {
-				productDtoList.add(ProductDto.builder().name(null).description("item_desc_" + i).price(i * 100)
-						.quantity(i * 10).status(true).build());
-			}
-			productDetailsRequest.setProductList(productDtoList);
-			/*
-			 * ProductResponse response =
-			 * shoppingCartController.addNewProducts(productDetailsRequest); assertEquals(0,
-			 * response.getStatusCode());
-			 */
+			ProductDto product = ProductDto.builder().name(null).description("item_desc_1").price(100).quantity(10)
+					.status(true).build();
+			ProductResponse response = shoppingCartController.addNewProducts(null, product.getName(),
+					product.getDescription(), product.getPrice(), product.getQuantity(), product.isStatus());
+			assertEquals(0, response.getStatusCode());
+
 		} catch (Exception e) {
 			assert true;
 		}

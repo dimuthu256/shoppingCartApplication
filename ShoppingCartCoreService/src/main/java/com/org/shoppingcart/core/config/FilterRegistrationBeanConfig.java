@@ -36,10 +36,11 @@ public class FilterRegistrationBeanConfig {
 							filterChain.doFilter(request, response);
 						} finally {
 							watch.stop();
-							log.info("Shopping Cart Service Request -> {} : {} : completed within {} ms", getUriWithMethodAndQuery(request),
-									watch.getTotalTimeMillis());
+							log.info("Shopping Cart Service Request -> {} : {} : completed within {} ms",
+									getUriWithMethodAndQuery(request), watch.getTotalTimeMillis());
 						}
 					}
+
 					private String getUriWithMethodAndQuery(HttpServletRequest request) {
 						return request.getMethod() + ": " + request.getRequestURI()
 								+ (StringUtils.hasText(request.getQueryString()) ? "?" + request.getQueryString() : "");

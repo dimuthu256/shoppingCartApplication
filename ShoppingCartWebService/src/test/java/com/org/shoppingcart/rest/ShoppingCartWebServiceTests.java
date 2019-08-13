@@ -27,8 +27,8 @@ public class ShoppingCartWebServiceTests {
 
 	public ShoppingCartWebServiceTests() {
 	}
-
 	
+	//@Test
 	public void findAllProducts() {
 		try {
 			ProductResponse response = shoppingCartService.findAllProducts();

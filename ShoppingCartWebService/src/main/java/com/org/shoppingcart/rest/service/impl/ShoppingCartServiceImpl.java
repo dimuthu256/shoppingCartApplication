@@ -54,11 +54,10 @@ public class ShoppingCartServiceImpl extends ServiceManager implements ShoppingC
 		String strResponse = restTemplate.getForObject(seviceUrl + REST_CONTROLLER_URL.GET_ALL_ITEMS, String.class);
 		logger.info("End Method Find All Products Service. Response : {}", strResponse);
 		return GsonUtil.getFromObject(strResponse, ProductResponse.class);
-		
+
 	}
 
 	@Override
-
 	@HystrixCommand(fallbackMethod = "fallBackAddProductExecutor", commandKey = "addProducts", groupKey = "shoppingCart")
 	public ProductResponse addNewProduct(MultipartFile multipartFile, ProductRequest productDetailsRequest) {
 		logger.info("Begin Method Add New Product Service : {}", productDetailsRequest);
@@ -66,12 +65,8 @@ public class ShoppingCartServiceImpl extends ServiceManager implements ShoppingC
 
 			// Original file name
 			String originalFileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
-			File directory = new File(tempLocation);
-			if (!directory.exists()) {
-				logger.info("Create directory ");
-				directory.mkdirs();
-			}
+			// create temp directory to upload img
+			createDirectory(tempLocation);
 			byte[] buf = new byte[1024];
 			File files = new File(tempLocation + originalFileName);
 			try (InputStream inputStream = multipartFile.getInputStream();
@@ -82,10 +77,6 @@ public class ShoppingCartServiceImpl extends ServiceManager implements ShoppingC
 				}
 			}
 
-			restTemplate = new RestTemplate();
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
 			MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 			body.add("image", new FileSystemResource(createFilePath(tempLocation, originalFileName)));
 			body.add("productName", productDetailsRequest.getProductDto().getName());
@@ -94,15 +85,36 @@ public class ShoppingCartServiceImpl extends ServiceManager implements ShoppingC
 			body.add("productQuentity", productDetailsRequest.getProductDto().getQuantity());
 			body.add("productStatus", productDetailsRequest.getProductDto().isStatus());
 
-			HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
+			restTemplate = new RestTemplate();
+			HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers());
+			logger.info("Add New Product Service : Begin Rest");
 			ResponseEntity<ProductResponse> responseEntity = restTemplate.exchange(
 					seviceUrl + REST_CONTROLLER_URL.ADD_NEW_PRODUCT, HttpMethod.POST, entity, ProductResponse.class);
+			logger.info("Add New Product Service : End Rest");
 			return responseEntity.getBody();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return null;
+	}
+
+	public ProductResponse fallBackfindAllExecutor() {
+		logger.info("Begin Method Fall Back Find All Executor");
+		return new ProductResponse(null, "Get Products Failed", 0);
+	}
+
+	public ProductResponse fallBackAddProductExecutor(MultipartFile multipartFile,
+			ProductRequest productDetailsRequest) {
+		logger.info("Begin Method Fall Back Add Product Executor : {} -> {}", multipartFile.getOriginalFilename(),
+				productDetailsRequest);
+		return new ProductResponse(null, "Add New Product Failed", 0);
+	}
+
+	private HttpHeaders headers() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		return headers;
 	}
 
 	private String createFilePath(String filePath, String fileName) {
@@ -112,16 +124,12 @@ public class ShoppingCartServiceImpl extends ServiceManager implements ShoppingC
 		return builder.toString();
 	}
 
-	public ProductResponse fallBackfindAllExecutor() {
-		logger.info("Begin Method Fall Back Executor");
-		return new ProductResponse(null, "Get Products Failed", 0);
-	}
-
-	public ProductResponse fallBackAddProductExecutor(MultipartFile multipartFile,
-			ProductRequest productDetailsRequest) {
-		logger.info("Begin Method Fall Back Executor : {} -> {}", multipartFile.getOriginalFilename(),
-				productDetailsRequest);
-		return new ProductResponse(null, "Add Product Failed", 0);
+	public void createDirectory(String tempLocation) {
+		File directory = new File(tempLocation);
+		if (!directory.exists()) {
+			logger.info("Create directory ");
+			directory.mkdirs();
+		}
 	}
 
 }

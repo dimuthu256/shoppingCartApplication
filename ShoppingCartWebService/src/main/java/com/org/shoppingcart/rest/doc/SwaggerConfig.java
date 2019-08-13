@@ -21,9 +21,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-	public static final Contact DEFAULT_CONTACT = new Contact("Dimuthu", "http://inovaitsys.com", "dnwnalaka@gmail.com");
-	public static final ApiInfo DEFAULT = new ApiInfo("Api Documentation of Shopping CartWeb Service",
-			"Api Documentation of Shopping CartWeb Service", "1.0.0", "urn:tos", DEFAULT_CONTACT, "Apache 2.0",
+	public static final Contact DEFAULT_CONTACT = new Contact("Dimuthu", "http://inovaitsys.com",
+			"dnwnalaka@gmail.com");
+	public static final ApiInfo DEFAULT = new ApiInfo("Api Documentation of Shopping Cart Web Service",
+			"Api Documentation of Shopping Cart Web Service", "1.0.0", "urn:tos", DEFAULT_CONTACT, "Apache 2.0",
 			"http://www.apache.org/licenses/LICENSE-2.0", new ArrayList<VendorExtension>());
 	private static final Set<String> DEFAULT_CON_PROD = new HashSet<>(
 			Arrays.asList("application/json", "application/json"));

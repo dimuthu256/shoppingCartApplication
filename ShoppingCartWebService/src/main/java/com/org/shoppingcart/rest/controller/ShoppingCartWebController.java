@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,10 +40,10 @@ public class ShoppingCartWebController {
 	@GetMapping()
 	public ProductResponse findAllProducts() {
 		try {
-			logger.info("Begin method find all products");
+			logger.info("Begin method Find All Products");
 			return shoppingCartService.findAllProducts();
 		} catch (Exception e) {
-			logger.error("Error in method find all products : {}", e.getMessage());
+			logger.error("Error in method Find All Products : {}", e.getMessage());
 		}
 		return new ProductResponse();
 	}
@@ -52,14 +51,14 @@ public class ShoppingCartWebController {
 	@CrossOrigin
 	@PostMapping(value = "items")
 	public ProductResponse saveAllItems(@RequestBody ItemsRequest itemList) {
-		logger.info("Begin method save all items");
+		logger.info("Begin method Save All Items");
 		ProductResponse response = new ProductResponse();
 		try {
 			queueMessageServiceImpl.send(itemList);
 			response.setStatus("Success");
 			response.setStatusCode(200);
 		} catch (Exception e) {
-			logger.error("Error in method save all items : {}", e.getMessage());
+			logger.error("Error in method Save All Items : {}", e.getMessage());
 			response.setStatus("Failed");
 			response.setStatusCode(0);
 		}
@@ -72,17 +71,17 @@ public class ShoppingCartWebController {
 			@RequestParam("productName") String productName, @RequestParam("productDescription") String productDesc,
 			@RequestParam("productPrice") double price, @RequestParam("productQuentity") int quentity,
 			@RequestParam("productStatus") boolean status) {
-		logger.info("Begin method save all items");
+		logger.info("Begin method Add New Product");
 		ProductResponse response = new ProductResponse();
 		try {
 			ProductRequest productDetailsRequest = new ProductRequest();
 			productDetailsRequest.setProductDto(ProductDto.builder().name(productName).description(productDesc)
 					.price(price).quantity(quentity).status(status).build());
-			response = shoppingCartService.addNewProduct(multipartFile,productDetailsRequest);
+			response = shoppingCartService.addNewProduct(multipartFile, productDetailsRequest);
 			response.setStatus("Success");
 			response.setStatusCode(200);
 		} catch (Exception e) {
-			logger.error("Error in method save all items : {}", e.getMessage());
+			logger.error("Error in Add New Product : {}", e.getMessage());
 			response.setStatus("Failed");
 			response.setStatusCode(0);
 		}
